@@ -70,7 +70,6 @@ function checkUsername() {
 	$.ajax({
 		url : 'http://localhost/FAPServer/checkLoginName',
 		dataType : 'json',
-		async : false,
 		contentType : 'application/json',
 		data : {
 			id : $('#username').val()
@@ -78,7 +77,7 @@ function checkUsername() {
 		error : function(xhr, status) {
 			console.log(status);
 		},
-		success : function(data) {
+		success : function(data, user) {
 			console.log('success');
 			if (data) {
 				$('#check').text('Benutzername nicht verfügbar');
