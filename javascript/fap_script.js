@@ -214,3 +214,35 @@ function generateCaptcha() {
 		$('#captcha_label').text(numberA.toString() + ' + ' + numberB.toString() + ' = ?');
 	});
 }
+
+function login() {
+	$(document).ready(function() {
+		var user; 
+		
+		checkUsername();
+
+		if (user) {
+			$.ajax({
+				url : 'http://localhost/FAPServer/Login',
+				type : 'POST',
+				dataType : 'json',
+				contentType : 'application/json',
+				data : JSON.stringify({
+					'loginName' : $('#username').val(),
+					'passwort' : {
+						'passwort' : $('#password').val()
+					}
+				}),
+				success : function(data) {
+					if (data) {
+						var sessionId = data;
+						alert('Erfolgreich angemeldet');
+					} else {
+						alert('Anmeldung fehlgeschlagen');
+					}
+				}
+			});
+		}
+	});
+}
+
