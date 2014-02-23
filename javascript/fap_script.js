@@ -66,10 +66,11 @@ function addUser(form) {
 }
 
 function checkUsername() {
-
+	var user;
 	$.ajax({
 		url : 'http://localhost/FAPServer/checkLoginName',
 		dataType : 'json',
+		async : false,
 		contentType : 'application/json',
 		data : {
 			id : $('#username').val()
@@ -88,6 +89,7 @@ function checkUsername() {
 			}
 		}
 	});
+	return user;
 	console.log('fertig');
 
 }
@@ -217,10 +219,10 @@ function generateCaptcha() {
 
 function login() {
 	$(document).ready(function() {
-		var user; 
-		
-		checkUsername();
 
+		var user = false;
+		user = checkUsername();
+		console.log(user.toString());
 		if (user) {
 			$.ajax({
 				url : 'http://localhost/FAPServer/Login',
