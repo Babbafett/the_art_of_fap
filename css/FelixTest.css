@@ -100,7 +100,7 @@ body {
 	float: left;
 	width: 250px;
 	margin-left: -100%;
-	position: relative;
+	/*position: relative;*/
 	background: #B5E3FF;
 	border-style:solid;
 	border-width:2px;
