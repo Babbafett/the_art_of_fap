@@ -5,81 +5,14 @@
 		<script src="http://code.jquery.com/jquery-2.1.0.min.js" type="text/javascript"></script>
 		<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
+		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			var map;
 			var markers = [];
 			var password_validate = false;
 			var captcha = false;
 			var user = false;
-
-			function initialize() {
-				var mapOptions = {
-					center : new google.maps.LatLng(51, 7),
-					zoom : 8
-				};
-				map = new google.maps.Map($("#map")[0], mapOptions);
-			}
-
-
 			google.maps.event.addDomListener(window, 'load', initialize);
-			function clearAllMarkers() {
-				if (markers) {
-					for (i in markers) {
-						markers[i].setMap(null);
-					}
-					markers.length = 0;
-				}
-			}
-
-			function addMarker(marker) {
-				this.markers.push(marker);
-			}
-
-			function addUser(form) {
-				console.log(user.toString());
-				console.log(password_validate.toString());
-				console.log(captcha.toString());
-				if (user && password_validate && captcha) {
-
-					$.ajax({
-						url : 'http://localhost/FAPServer/addUser',
-						type : 'POST',
-						dataType : 'json',
-						contentType : 'application/json',
-						data : JSON.stringify({
-							'loginName' : $('#username').val(),
-							'passwort' : {
-								'passwort' : $('#password').val()
-							},
-							'vorname' : $('#surname').val(),
-							'nachname' : $('#name').val(),
-							'strasse' : $('#street').val(),
-							'plz' : $('#postal').val(),
-							'ort' : $('#city').val(),
-							'land' : $('#country').val(),
-							'telefon' : '012345678979',
-							'email' : {
-								'adresse' : $('#mail').val()
-							}
-						}),
-						success : function(data) {
-							if (data) {
-								alert('User erfolgreich angelegt');
-							} else {
-								alert('User nicht erfolgreich angelegt');
-							}
-						}
-					});
-				} else {
-					if (!user) {
-						alert('Benutzer nicht verfügbar');
-					} else if (!password_validate) {
-						alert('Passwörter stimmen nicht überein');
-					} else if (!captcha) {
-						alert('Captcha Eingabe ist falsch');
-					}
-				};
-			}
 		</script>
 		<link rel="stylesheet" type="text/css" href="../css/register.css"/>
 		<title>register</title>
