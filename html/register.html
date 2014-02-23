@@ -7,6 +7,7 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var result;
 			var map;
 			var markers = [];
 			var password_validate = false;
@@ -39,31 +40,7 @@
 						<input id="username" name="username" type="text" required/>
 						<div id='check' style="display:inline"></div>
 						<script type="text/javascript">
-							$('#username').keyup(function() {
-								$.ajax({
-									url : 'http://localhost/FAPServer/checkLoginName',
-									dataType : 'json',
-									contentType : 'application/json',
-									data : {
-										id : $('#username').val()
-									},
-									error : function(xhr, status) {
-										console.log(status);
-									},
-									success : function(data) {
-										console.log('success');
-										if (data) {
-											$('#check').text('Benutzername nicht verfügbar');
-											user = false;
-										} else {
-											$('#check').text('Benutzername verfügbar');
-											user = true;
-										}
-									}
-								});
-								console.log('fertig');
-
-							});
+							$('#username').keyup(checkUsername);
 						</script>
 					</section>
 					<section id="credentials" style="display: block">
@@ -72,32 +49,9 @@
 						<input id="password_check" name="password_check" type="password" maxlength="20" required/>
 						<div id="password_validate" style="display:inline"></div>
 						<script type="text/javascript">
-							$('#password_check').keyup(function() {
-								var password = $('#password').val();
-								var password_check = $('#password_check').val();
-								if (password == password_check) {
-									$('#password_validate').text('Passwörter stimmen überein');
-									password_validate = true;
-								} else {
-									$('#password_validate').text('Passwörter stimmen nicht überein');
-									password_validate = false;
-								};
-							});
+							$('#password_check').keyup(passwordCheck);
 
-							$('#password').keyup(function() {
-
-								var password_check = $('#password_check').val();
-								var password = $('#password').val();
-
-								if (password == password_check) {
-									$('#password_validate').text('Passwörter stimmen überein');
-									password_validate = true;
-								} else {
-									$('#password_validate').text('Passwörter stimmen nicht überein');
-									password_validate = false;
-								}
-								;
-							});
+							$('#password').keyup(passwordCheck);
 						</script>
 					</section>
 					<section id="location" style="display: block">
@@ -105,78 +59,13 @@
 							<label for="postal">PLZ: </label>
 							<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
 							<script type="text/javascript">
-								$('#postal').keyup(function() {
-									$.ajax({
-										url : 'http://api.geonames.org/postalCodeSearchJSON?username=Babbafett',
-										dataType : 'jsonp',
-										data : {
-											postalcode : $('#postal').val(),
-											style : 'full',
-											maxRows : 12,
-											lang : 'de'
-										},
-										success : function(data) {
-											$('#city').val(data.postalCodes[0].placeName);
-											$.ajax({
-												url : 'http://api.geonames.org/searchJSON?username=Babbafett',
-												dataType : 'jsonp',
-												data : {
-													name_equals : $('#city').val(),
-													featureClass : 'P',
-													style : 'full',
-													country : 'DE',
-													maxRows : 12,
-													lang : 'de'
-												},
-												success : function(data) {
-													$('#country').val(data.geonames[0].countryName);
-													var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
-													map.setZoom(13);
-													map.setCenter(latlng);
-													clearAllMarkers();
-													addMarker(new google.maps.Marker({
-														map : map,
-														position : latlng
-													}));
-
-												}
-											});
-										}
-									});
-
-								});
+								$('#postal').keyup(getLocationByPostal);
 							</script>
 
 							<label for="city">Ort: </label>
 							<input id="city" name="city" type="text" required/>
 							<script type="text/javascript">
-								$('#city').keyup(function() {
-									$.ajax({
-										url : 'http://api.geonames.org/searchJSON?username=Babbafett',
-										dataType : 'jsonp',
-										data : {
-											name_equals : $('#city').val(),
-											featureClass : 'P',
-											style : 'full',
-											country : 'DE',
-											maxRows : 12,
-											lang : 'de'
-										},
-										success : function(data) {
-											$('#country').val(data.geonames[0].countryName);
-											var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
-											map.setZoom(13);
-											map.setCenter(latlng);
-											clearAllMarkers();
-											addMarker(new google.maps.Marker({
-												map : map,
-												position : latlng
-											}));
-
-										}
-									});
-
-								});
+								$('#city').keyup(getLocationByCity);
 							</script>
 						</p>
 
@@ -185,25 +74,7 @@
 							<input id="street" name="street" type="text" required/>
 							<script type="text/javascript">
 								var geocoder;
-								$('#street').keyup(function() {
-									geocoder = new google.maps.Geocoder();
-									geocoder.geocode({
-										'address' : $('#street').val()
-									}, function(results, status) {
-										if (status == google.maps.GeocoderStatus.OK) {
-											map.setZoom(15);
-											map.setCenter(results[0].geometry.location);
-											clearAllMarkers();
-											addMarker(new google.maps.Marker({
-												map : map,
-												position : results[0].geometry.location
-											}));
-											$('#city').val(results[0].address_components[4].long_name);
-											$('#country').val(results[0].address_components[7].long_name);
-											$('#postal').val(results[0].address_components[8].long_name);
-										}
-									});
-								});
+								$('#street').keyup(getLocationByStreet);
 							</script>
 
 							<label for="country">Land: </label>
@@ -220,23 +91,8 @@
 						<input id="captcha" name="captcha" type="text" pattern="[0-9]{2}" required/>
 						<div id='check_captcha' style="display:inline"></div>
 						<script type="text/javascript">
-							var result;
-							$(document).ready(function() {
-								var numberA = 1 + Math.floor(Math.random() * 10);
-								var numberB = 1 + Math.floor(Math.random() * 10);
-								result = numberA + numberB;
-								$('#captcha_label').text(numberA.toString() + ' + ' + numberB.toString() + ' = ?');
-							});
-							$('#captcha').keyup(function() {
-								var input = $('#captcha').val();
-								if (result == input) {
-									$('#check_captcha').text('richtig');
-									captcha = true;
-								} else {
-									$('#check_captcha').text('falsch');
-									captcha = false;
-								};
-							});
+							generateCaptcha();
+							$('#captcha').keyup(checkCaptcha);
 						</script>
 					</section>
 					<section id="ui" style="display: block">
