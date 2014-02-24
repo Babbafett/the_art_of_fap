@@ -63,7 +63,9 @@
 						<input id="username" name="username" type="text" required/>
 						<div id='check' style="display:inline"></div>
 						<script type="text/javascript">
-							$('#username').keyup(checkUsername);
+							$('#username').keyup(function(){
+								user = checkUsername();
+							});
 						</script>
 					</section>
 					<section id="credentials" style="display: block">
