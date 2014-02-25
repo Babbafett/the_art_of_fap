@@ -8,15 +8,24 @@
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			var result;
+			var geocoder;
 			var map;
 			var markers = [];
-			var password_validate = false;
 			var captcha = false;
 			var user = false;
+			var table;
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
-		<link rel="stylesheet" type="text/css" href="../css/register.css"/>
-		<title>register</title>
+		<link rel="stylesheet" type="text/css" href="../css/locationActual.css"/>
+		<style>
+			#selectable .ui-selecting {
+				background: #ccc;
+			}
+			#selectable .ui-selected {
+				background: #999;
+			}
+		</style>
+		<title>actual location</title>
 	</head>
 	<body>
 		<header>
@@ -47,7 +56,51 @@
 		</nav>
 
 		<div id="main">
-			<form name="edit_User" accept-charset="utf-8">
+			<form>
+				<table id="selectable">
+					<thead>
+						<th>Name</th>
+						<th>Vorname</th>
+						<th>Benutzername</th>
+						<th>PLZ</th>
+						<th>Ort</th>
+						<th>Strasse</th>
+						<th>E-Mail</th>
+					</thead>
+					<tbody id="tableBody">
+
+					</tbody>
+				</table>
+				<input type="button" value="Bearbeiten"/>
+				<input type="button" value="L&ouml;schen"/>
+				<input type="button" value="Abbrechen"/>
+			</form>
+			<script type="text/javascript">
+				table = getContacts();
+				var loginName;
+				$('#tableBody').html(table);
+				$('#tableBody').selectable({
+					filter : 'tr',
+					selected : function(event, ui) {
+						$('#edit_Location').show();
+						$(ui.selected).children().each(function(index, value) {
+							if (index == 0) {
+								$('#name').val($(value).text());
+							} else if (index == 1) {
+								$('#surname').val($(value).text());
+							} else if (index == 2) {
+								loginName = $(value).text();
+							} else if (index == 3) {
+								$('#postal').val($(value).text());
+							} else if (index == 6) {
+								$('#mail').val($(value).text());
+							}
+						});
+						getLocation(loginName);
+					}
+				});
+			</script>
+			<form name="edit_Location" id="edit_Location" accept-charset="utf-8">
 				<fieldset>
 					<section style="display: block">
 						<label for="surname">Vorname: </label>
@@ -57,33 +110,21 @@
 						<input id="name" name="name" type="text" required/>
 					</section>
 					<section id="personal" style="display: block">
-						<label for="username">Gew&uuml;nschter
-							<br>
-							Benutzername: </label>
+						<label for="username"> Benutzername: </label>
 						<input id="username" name="username" type="text" required/>
 						<div id='check' style="display:inline"></div>
 						<script type="text/javascript">
 							$('#username').keyup(function() {
 								user = checkUsername();
 								if (user) {
-									$('#check').text('Benutzername verfügbar');
+									$('#check').text('Benutzername nicht vorhanden');
 								} else {
-									$('#check').text('Benutzername nicht verfügbar');
+									$('#check').text('Benutzername vorhanden');
 								}
 							});
 						</script>
 					</section>
-					<section id="credentials" style="display: block">
-						<label for="password">Passwort: </label>
-						<input id="password" name="password" type="password" maxlength="20" required/>
-						<input id="password_check" name="password_check" type="password" maxlength="20" required/>
-						<div id="password_validate" style="display:inline"></div>
-						<script type="text/javascript">
-							$('#password_check').keyup(passwordCheck);
 
-							$('#password').keyup(passwordCheck);
-						</script>
-					</section>
 					<section id="location" style="display: block">
 						<p>
 							<label for="postal">PLZ: </label>
@@ -110,28 +151,23 @@
 							<label for="country">Land: </label>
 							<input id="country" name="country" type="text" required/>
 						</p>
-						<div id="map" <!--style="width: 500px; height: 400px"--> ></div>
+						<div id="map" style="width: 500px; height: 400px" ></div>
 					</section>
 					<section id="communication" style="display: block">
 						<label for="mail">E-Mail: </label>
 						<input id="mail" name="mail" type="email" required/>
 					</section>
-					<section id="captcha_validate" style="display: block">
-						<label id="captcha_label" for="captcha"></label>
-						<input id="captcha" name="captcha" type="text" pattern="[0-9]{2}" required/>
-						<div id='check_captcha' style="display:inline"></div>
-						<script type="text/javascript">
-							generateCaptcha();
-							$('#captcha').keyup(checkCaptcha);
-						</script>
-					</section>
+
 					<section id="ui" style="display: block">
-						<input type="button" name="submit" value="OK" onclick="addUser(add_User)"/>
+						<input type="button" name="submit" value="OK" onclick="editLocation(edit_Location)"/>
 						<input type="submit" value="Abbrechen" />
 					</section>
 				</fieldset>
 
 			</form>
+			<script type="text/javascript">
+				$('#edit_Location').hide();
+			</script>
 		</div>
 
 		<footer>
