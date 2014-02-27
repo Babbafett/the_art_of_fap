@@ -33,7 +33,13 @@
 							<a href="Login.html">Login</a>
 						</li>
 						<li>
-							<a href="Adressbuch">Adressbuch</a>
+							<a href="adressbook.html">Adressbook</a>
+						</li>
+						<li>
+							<a href="locationSearch.html">Location search</a>
+						</li>
+						<li>
+							<a href="setMyLocation.html">Set my location</a>
 						</li>
 					</ul>
 				</div>
@@ -43,7 +49,7 @@
 			<div id="content_container">
 
 				<div id="content">
-					<span class="tab_l">Welcome to The Art of Fap</span>
+					<span class="tab_l">Register</span>
 					<br />
 					<p>
 						Here you register for the Art of Fap. Just tell us who and where you are so that we can sell our information to a third.
@@ -55,18 +61,18 @@
 					<form name="add_User" accept-charset="utf-8">
 						<fieldset>
 							<section style="display: block">
-								<label for="surname" class="fieldColor">Vorname: </label>
+								<label for="surname" class="fieldColor">Surname: </label>
 								<input id="surname" name="surname" type="text" class="inputfieldPosition1" required/>
 								<br />
 
-								<label for="name" class="fieldColor">Nachname: </label>
+								<label for="name" class="fieldColor">Name: </label>
 								<input id="name" name="name" type="text" class="inputfieldPosition1" required/>
 								<br />
 
 							</section>
 							<section id="personal" style="display: block">
-								<label for="username" class="fieldColor">Gew&uuml;nschter
-									Benutzername: </label>
+								<label for="username" class="fieldColor">Desired
+									Username: </label>
 								<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
 								<div id='check' style="display:inline"></div>
 								<script type="text/javascript">
@@ -81,10 +87,10 @@
 								</script>
 							</section>
 							<section id="credentials" style="display: block">
-								<label for="password" class="fieldColor">Passwort: </label>
+								<label for="password" class="fieldColor">Password: </label>
 								<input id="password" name="password" type="password" maxlength="20" class="inputfieldPosition1" required/>
 								<br />
-								<label for="password" class="fieldColor">Passwort bestätigen: </label>
+								<label for="password" class="fieldColor">Password confirm: </label>
 								<input id="password_check" name="password_check" type="password" maxlength="20" class="inputfieldPosition1" required/>
 								<div id="password_validate" style="display:inline"></div>
 								<script type="text/javascript">
@@ -95,26 +101,26 @@
 							</section>
 							<section id="location" style="display: block">
 								<p>
-									<label for="postal">PLZ: </label>
+									<label for="postal">Postalcode: </label>
 									<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition2"/>
 									<script type="text/javascript">
 										$('#postal').keyup(getLocationByPostal);
 									</script>
 
-									<label for="city">Ort: </label>
+									<label for="city">City: </label>
 									<input id="city" name="city" type="text" required class="inputfieldPosition2"/>
 									<script type="text/javascript">
 										$('#city').keyup(getLocationByCity);
 									</script>
 									</br>
-									<label for="street">Strasse: </label>
+									<label for="street">Street: </label>
 									<input id="street" name="street" type="text" required class="inputfieldPosition2"/>
 									<script type="text/javascript">
 										var geocoder;
 										$('#street').keyup(getLocationByStreet);
 									</script>
 
-									<label for="country">Land: </label>
+									<label for="country">Country: </label>
 									<input id="country" name="country" type="text" required class="inputfieldPosition2"/>
 								</p>
 								<div id="map" <!--style="width: 500px; height: 400px"--> ></div>

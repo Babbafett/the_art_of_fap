@@ -16,81 +16,89 @@
 			var user = false;
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
-		<link rel="stylesheet" type="text/css" href="../css/locationAdd.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/setMyLocation.css"/>
 		<title>add location</title>
 	</head>
 	<body>
-		<header>
+		<div id="container">
 			<div id="header">
-				<h1>Welcome to The Art Of FAP!!!!</h1>
+				<div id="header">
+					<div id="nav">
+						<ul id="nav">
+							<li>
+								<a href="register.html"> Register</a>
+							</li>
+							<li>
+								<a href="Index.html"> Index</a>
+							</li>
+							<li>
+								<a href="Login.html">Login</a>
+							</li>
+							<li>
+								<a href="adressbook.html">Adressbook</a>
+							</li>
+							<li>
+								<a href="locationSearch.html">Location search</a>
+							</li>
+							<li>
+								<a href="setMyLocation.html">Set my location</a>
+							</li>
+						</ul>
+					</div>
+				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
+				</div>
 			</div>
-
-		</header>
-		<nav>
-			<ul id="nav">
-				<li>
-					<a href="register.html"> Register</a>
-				</li>
-				<li>
-					<a href="index.html"> Index</a>
-				</li>
-				<li>
-					<a href="FelixTest.html"> Felix</a>
-				</li>
-				<li>
-					<a href="login">Login</a>
-				</li>
-				<li>
-					<a href="Adressbuch">Adressbuch</a>
-				</li>
-			</ul>
-
-		</nav>
-
-		<div id="main">
-			<form name="add_Location" accept-charset="utf-8">
-				<fieldset>
-					<section id="location" style="display: block">
-						<p>
-							<label for="postal">PLZ: </label>
-							<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-							<script type="text/javascript">
-								$('#postal').keyup(getLocationByPostal);
-							</script>
-
-							<label for="city">Ort: </label>
-							<input id="city" name="city" type="text" required/>
-							<script type="text/javascript">
-								$('#city').keyup(getLocationByCity);
-							</script>
-						</p>
-
-						<p>
-							<label for="street">Strasse: </label>
-							<input id="street" name="street" type="text" required/>
-							<script type="text/javascript">
-								var geocoder;
-								$('#street').keyup(getLocationByStreet);
-							</script>
-
-							<label for="country">Land: </label>
-							<input id="country" name="country" type="text" required/>
-						</p>
-						<div id="map" style="width: 500px; height: 400px" ></div>
-					</section>
-
-
-					<section id="ui" style="display: block">
-						<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
-						<input type="submit" value="Abbrechen" />
-					</section>
-				</fieldset>
-
-			</form>
+		<div id="content_container">
+			<div id="content">
+					<span class="tab_l">Set my location</span>
+					<br />
+					<p>
+						Tell us your position! If you do that, we can kill you easier!
+						<br />
+					</p>
+			</div>
+			<div id="main">
+				<form name="add_Location" accept-charset="utf-8">
+					<fieldset>
+						<section id="location" style="display: block">
+								<label for="postal" class="fieldColor">PLZ: </label>
+								<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition1"/>
+								<script type="text/javascript">
+									$('#postal').keyup(getLocationByPostal);
+								</script>
+								<br />
+								<label for="city" class="fieldColor">Ort: </label>
+								<input id="city" name="city" type="text" class="inputfieldPosition1" required/>
+								<script type="text/javascript">
+									$('#city').keyup(getLocationByCity);
+								</script>
+								<br />
+								<label for="street" class="fieldColor">Strasse: </label>
+								<input id="street" name="street" type="text" class="inputfieldPosition1" required/>
+								<script type="text/javascript">
+									var geocoder;
+									$('#street').keyup(getLocationByStreet);
+								</script>
+								<br />
+								<label for="country" class="fieldColor">Land: </label>
+								<input id="country" name="country" type="text" class="inputfieldPosition1" required/>
+								<br /><br />
+							<div id="map" style="width: 500px; height: 400px" ></div>
+						</section>
+	
+	
+						<section id="ui" style="display: block">
+							<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
+							<input type="submit" value="Abbrechen" />
+						</section>
+					</fieldset>
+	
+				</form>
+			</div>
 		</div>
-
 		<footer>
 
 		</footer>
+		</div>
 	</body>
 </html>
