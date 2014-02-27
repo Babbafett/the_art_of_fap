@@ -444,13 +444,56 @@ function getLocation(loginName) {
 		});
 
 		$('#location_search').show();
-	}
-	
-	else
-	{
+	} else {
 		alert('User not valid!');
 	}
 
 	return latlng;
+}
+
+function setAdressbook() {
+
+	$('#tableBody').children().each(function(index, value) {
+
+		var value1;
+		var value2;
+		var value3;
+		var value4;
+		var value5;
+		var value6;
+		var value7;
+
+		value.children.each(function(i, v) {
+			if (i == 0) {
+				value1 = $(v).text();
+			} else if (i == 1) {
+				value2 = $(v).text();
+			} else if (i == 2) {
+				value3 = $(v).text();
+			} else if (i == 3) {
+				value3 = $(v).text();
+			} else if (i == 4) {
+				value4 = $(v).text();
+			} else if (i == 5) {
+				value5 = $(v).text();
+			} else if (index == 6) {
+				value6 = $(v).text();
+			}
+
+		});
+		JSON.stringify({
+			'kontake' : [{
+				'vorname' : value1,
+				'nachname' : value2,
+				'benutzername' : value3,
+				'PLZ' : value4,
+				'strasse' : value5,
+				'mail' : value6,
+				'stadt' : value7
+			}]
+		});
+
+	});
+
 }
 
