@@ -44,87 +44,12 @@
 		
 			  <div id="content">
 			  <span class="tab_l">Welcome to The Art of Fap</span><br />
-			  <p> Here You learn the Art of Fap<br /></p>
+			  <p> Welcome to the Art of Fap. Here you may share your locations with your friends! Find out where they are, you can track them down and kill them! You can stalk them! This side is made for the NSA!<br /></p>
 			  </div>
 			  
 			  		<div id="main">
 			<form name="add_User" accept-charset="utf-8">
 				<fieldset>
-					<section style="display: block">
-						<label for="surname" class="fieldColor">Vorname: </label>
-						<input id="surname" name="surname" type="text" class="inputfieldPosition1" required/>
-						<br />
-						
-						<label for="name" class="fieldColor">Nachname: </label>
-						<input id="name" name="name" type="text" class="inputfieldPosition1" required/>
-						<br />
-						
-					</section>
-					<section id="personal" style="display: block">
-						<label for="username" class="fieldColor">Gew&uuml;nschter
-							Benutzername: </label>
-						<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
-						<div id='check' style="display:inline"></div>
-						<script type="text/javascript">
-							$('#username').keyup(checkUsername);
-						</script>
-					</section>
-					<section id="credentials" style="display: block">
-						<label for="password" class="fieldColor">Passwort: </label>
-						<input id="password" name="password" type="password" maxlength="20" class="inputfieldPosition1" required/>
-						<br />
-						<label for="password" class="fieldColor">Passwort bestätigen: </label>
-						<input id="password_check" name="password_check" type="password" maxlength="20" class="inputfieldPosition1" required/>
-						<div id="password_validate" style="display:inline"></div>
-						<script type="text/javascript">
-							$('#password_check').keyup(passwordCheck);
-
-							$('#password').keyup(passwordCheck);
-						</script>
-					</section>
-					<section id="location" style="display: block">
-						<p>
-						<label for="postal">PLZ: </label>
-						<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-						<script type="text/javascript">
-							$('#postal').keyup(getLocationByPostal);
-						</script>
-
-						<label for="city">Ort: </label>
-						<input id="city" name="city" type="text" required/>
-						<script type="text/javascript">
-							$('#city').keyup(getLocationByCity);
-						</script>
-						</br>
-						<label for="street">Strasse: </label>
-						<input id="street" name="street" type="text" required/>
-						<script type="text/javascript">
-							var geocoder;
-							$('#street').keyup(getLocationByStreet);
-						</script>
-
-						<label for="country">Land: </label>
-						<input id="country" name="country" type="text" required/>
-						</p>
-						<div id="map" <!--style="width: 500px; height: 400px"--> ></div>
-					</section>
-					<section id="communication" style="display: block">
-						<label for="mail" class="fieldColor">E-Mail: </label>
-						<input id="mail" name="mail" type="email" class="inputfieldPosition1" required/>
-					</section>
-					<section id="captcha_validate" style="display: block">
-						<label id="captcha_label" for="captcha" class="fieldColor"></label>
-						<input id="captcha" name="captcha" type="text" pattern="[0-9]{2}" class="inputfieldPosition1" required/>
-						<div id='check_captcha' style="display:inline"></div>
-						<script type="text/javascript">
-							generateCaptcha();
-							$('#captcha').keyup(checkCaptcha);
-						</script>
-					</section>
-					<section id="ui" style="display: block">
-						<input type="button" name="submit" value="OK" onclick="addUser(add_User)"/>
-						<input type="submit" value="Abbrechen" />
-					</section>
 				</fieldset>
 
 			</form>

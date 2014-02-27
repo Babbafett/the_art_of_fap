@@ -240,7 +240,10 @@ function login() {
 					console.log('hallo');
 					if (data) {
 						var sessionId = data;
-						alert('Erfolgreich angemeldet');
+						readCookieSessionId($('#username').val(), sessionId, 7);
+						//alert('SessionID from Cookie: ' + readCookieSessionId());
+						//alert('Username from Cookie: ' + readCookieUserName());
+						location.href = "http://localhost/fap_client/html/index.html";
 					} else {
 						alert('Anmeldung fehlgeschlagen');
 					}
@@ -250,6 +253,40 @@ function login() {
 	});
 }
 
+function createCookie(name, value, days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else
+		var expires = "";
+
+	document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookieSessionId() {
+
+	var ca = document.cookie.split(';');
+
+	var cookieString = ca[0];
+	
+	var index = cookieString.search("=");
+	
+	return cookieString.substring(index + 4, 18);
+
+}
+
+function readCookieUserName() {
+	
+	var ca = document.cookie.split(';');
+
+	var cookieString = ca[0];
+	
+	var index = cookieString.search("=");
+	
+	return cookieString.substring(0, index);
+
+}
 function editLocation(editLocation) {
 
 }
