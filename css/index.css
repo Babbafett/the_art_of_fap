@@ -129,8 +129,14 @@ margin:-1%;
 border:2px;
 position:relative;
 float:right;
+}	
 
+.inputfieldPosition2
+{
 
+border:2px;
+position:relative;
+left:5px;
 }	
 
 .fieldColor
