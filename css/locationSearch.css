@@ -32,6 +32,11 @@ p{
 	text-align: justify;
 	margin-left: 100px;
 	}
+form{
+	position:relative;
+	text-align:center;
+	color:#ccc;
+}
 	
 div#header {
 	height:100px;
