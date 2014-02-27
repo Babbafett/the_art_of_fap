@@ -369,7 +369,7 @@ function changeMode(mode) {
 	var status;
 	if (!mode) {
 		status = true;
-		$('#edit_Location').show();
+		$('#edit_adressbook').show();
 		$('#abort').show();
 		$('#mode').text('Change mode on');
 		$(ui.selected).children().each(function(index, value) {
@@ -391,8 +391,7 @@ function changeMode(mode) {
 		});
 	} else {
 		status = false;
-		$('#edit_Location').hide();
-		$('#abort').hide();
+		$('#edit_adressbook').hide();
 		$('#mode').text('');
 	}
 
@@ -452,18 +451,24 @@ function getLocation(loginName) {
 }
 
 function setAdressbook() {
+	var value1;
+	var value2;
+	var value3;
+	var value4;
+	var value5;
+	var value6;
+	var value7;
+	var json;
+	var count = 1;
+	var string;
+
+	json = "{'kontakte':[";
 
 	$('#tableBody').children().each(function(index, value) {
-
-		var value1;
-		var value2;
-		var value3;
-		var value4;
-		var value5;
-		var value6;
-		var value7;
-
-		value.children.each(function(i, v) {
+		if (count > 1 && count <= $('#tableBody').children().length) {
+			json = json + ',';
+		}
+		$(value).children().each(function(i, v) {
 			if (i == 0) {
 				value1 = $(v).text();
 			} else if (i == 1) {
@@ -471,29 +476,23 @@ function setAdressbook() {
 			} else if (i == 2) {
 				value3 = $(v).text();
 			} else if (i == 3) {
-				value3 = $(v).text();
-			} else if (i == 4) {
 				value4 = $(v).text();
-			} else if (i == 5) {
+			} else if (i == 4) {
 				value5 = $(v).text();
-			} else if (index == 6) {
+			} else if (i == 5) {
 				value6 = $(v).text();
+			} else if (i == 6) {
+				value7 = $(v).text();
 			}
 
 		});
-		JSON.stringify({
-			'kontake' : [{
-				'vorname' : value1,
-				'nachname' : value2,
-				'benutzername' : value3,
-				'PLZ' : value4,
-				'strasse' : value5,
-				'mail' : value6,
-				'stadt' : value7
-			}]
-		});
+		string = "{'nachname' :" + value1 + ",'vorname' :" + value2 + ",'benutzername' :" + value3 + ",'PLZ' :" + value4 + ",'ort' :" + value5 + ",'strasse' :" + value6 + ",'mail' :" + value7 + "}";
 
+		json = json + string;
+		count++;
 	});
+	json = json + ']}';
+	json = JSON.stringify(json);
+	console.log(json.toString());
 
 }
-

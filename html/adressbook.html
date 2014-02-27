@@ -10,15 +10,16 @@
 			var user = false;
 			var table;
 			var mode = false;
+			var mode_add = false;
 			var currentUi;
 		</script>
 		<link rel="stylesheet" type="text/css" href="../css/adressbook.css"/>
 		<style>
 			#selectable .ui-selecting {
-				background: #ccc;
+				background:#ccc;
 			}
 			#selectable .ui-selected {
-				background: #999;
+				background:#999;
 			}
 		</style>
 		<title>Address Book</title>
@@ -47,78 +48,84 @@
 							<a href="setMyLocation.html">Set my location</a>
 						</li>
 					</ul>
-			  	</div>
-			  	<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>	
+				</div>
+				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 			</div>
-		<div id="content_container">
-			<div id="content">
-			  <span class="tab_l">Adressbook</span><br />
-			  <p> Here are your Friends!<br /></p>
-			</div>
-			<div id="main">
-				<fieldset>
-					<form>
-						<table id="selectable">
-							<thead>
-								<th class="fieldColor">Name</th>
-								<th class="fieldColor">Vorname</th>
-								<th class="fieldColor">Benutzername</th>
-								<th class="fieldColor">PLZ</th>
-								<th class="fieldColor">Ort</th>
-								<th class="fieldColor">Strasse</th>
-								<th class="fieldColor">E-Mail</th>
-							</thead>
-							<tbody id="tableBody">
-		
-							</tbody>
-						</table>
-						<input id="change" type="button" value="edit"/>
-						<input id="delete" type="button" value="delete"/>
+			<div id="content_container">
+				<div id="content">
+					<span class="tab_l">Adressbook</span>
+					<br />
+					<p>
+						Here are your Friends!
+						<br />
+					</p>
+				</div>
+				<div id="main">
+					<fieldset>
+						<form>
+							<table id="selectable">
+								<thead>
+									<th class="fieldColor">Name</th>
+									<th class="fieldColor">Vorname</th>
+									<th class="fieldColor">Benutzername</th>
+									<th class="fieldColor">PLZ</th>
+									<th class="fieldColor">Ort</th>
+									<th class="fieldColor">Strasse</th>
+									<th class="fieldColor">E-Mail</th>
+								</thead>
+								<tbody id="tableBody">
+
+								</tbody>
+							</table>
+							<input id="change" type="button" value="edit"/>
+							<input id="delete" type="button" value="delete"/>
+							<input id="add" type="button" value="add"/>
+							<div id="mode"></div>
+						</form>
 						<script type="text/javascript">
-						        $('#delete').click(function(){ 
-                                   $(currentUi.selected).remove();
-                                   
-                                   setAdressbook();
-                              });
+							table = getContacts();
+							var loginName;
+							$('#tableBody').html(table);
+							$('#tableBody').selectable({
+								filter : 'tr',
+								selected : function(event, ui) {
+									currentUi = ui;
+
+									$(ui.selected).children().each(function(index, value) {
+										if (index == 0) {
+											$('#name').val($(value).text());
+										} else if (index == 1) {
+											$('#surname').val($(value).text());
+										} else if (index == 2) {
+											$('#username').val($(value).text());
+										} else if (index == 3) {
+											$('#postal').val($(value).text());
+										} else if (index == 4) {
+											$('#city').val($(value).text());
+										} else if (index == 5) {
+											$('#street').val($(value).text());
+										} else if (index == 6) {
+											$('#mail').val($(value).text());
+										}
+									});
+								}
+							});
+							$('#change').click(function() {
+								console.log(mode.toString());
+								mode = changeMode(mode);
+							});
+							$('#delete').click(function() {
+								$(currentUi.selected).remove();
+
+								setAdressbook();
+							});
+							$('#add').click(function() {
+								$('#edit_adressbook').show();
+								mode_add = true;
+							});
 						</script>
-						<div id="mode"></div>
-					</form>
-					<script type="text/javascript">
-						$('#abort').hide();
-						table = getContacts();
-						var loginName;
-						$('#tableBody').html(table);
-						$('#tableBody').selectable({
-							filter : 'tr',
-							selected : function(event, ui) {
-								currentUi = ui;
-		
-								$(ui.selected).children().each(function(index, value) {
-									if (index == 0) {
-										$('#name').val($(value).text());
-									} else if (index == 1) {
-										$('#surname').val($(value).text());
-									} else if (index == 2) {
-										$('#username').val($(value).text());
-									} else if (index == 3) {
-										$('#postal').val($(value).text());
-									} else if (index == 4) {
-										$('#city').val($(value).text());
-									} else if (index == 5) {
-										$('#street').val($(value).text());
-									} else if (index == 6) {
-										$('#mail').val($(value).text());
-									}
-								});
-							}
-						});
-						$('#change').click(function() {
-							console.log(mode.toString());
-							mode = changeMode(mode);
-						});
-					</script>
-					<form name="edit_Location" id="edit_Location" accept-charset="utf-8">
-						<fieldset>
+						<form name="edit_adressbook" id="edit_adressbook" accept-charset="utf-8">
+							<fieldset>
 								<label for="surname" class="fieldColor" >Vorname: </label>
 								<input id="surname" name="surname" type="text" class="inputfieldPosition1" required/>
 								<br />
@@ -128,16 +135,6 @@
 								<label for="username" class="fieldColor" > Benutzername: </label>
 								<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
 								<div id='check' style="display:inline"></div>
-								<script type="text/javascript">
-									$('#username').keyup(function() {
-										user = checkUsername();
-										if (user) {
-											$('#check').text('Benutzername nicht vorhanden');
-										} else {
-											$('#check').text('Benutzername vorhanden');
-										}
-									});
-								</script>
 								<br />
 								<label for="postal" class="fieldColor" >PLZ: </label>
 								<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition1"/>
@@ -153,41 +150,42 @@
 								<br />
 								<input type="button" id="editEntry" name="submit" value="OK"/>
 								<input type="button" value="abort" />
-						</fieldset>
-		
-					</form>
-					<script type="text/javascript">
-						$('#edit_Location').hide();
-		
-						$('#editEntry').click(function() {
-							$(currentUi.selected).children().each(function(index, value) {
-								console.log('test');
-								if (index == 0) {
-									$(value).text($('#name').val());
-								} else if (index == 1) {
-									$(value).text($('#surname').val());
-								} else if (index == 2) {
-									$(value).text($('#username').val());
-								} else if (index == 3) {
-									$(value).text($('#postal').val());
-								} else if (index == 4) {
-									$(value).text($('#city').val());
-								} else if (index == 5) {
-									$(value).text($('#street').val());
-								} else if (index == 6) {
-									$(value).text($('#mail').val());
-								}
-							});
-							$('#edit_Location').hide();
-							$('#mode').text('');
-							mode = false;
-						});
-					</script>
-				</fieldset>
-			</div>
-		</div>
-		<footer>
+							</fieldset>
 
-		</footer>
+						</form>
+
+						<script type="text/javascript">
+							$('#edit_adressbook').hide();
+
+							$('#editEntry').click(function() {
+								$(currentUi.selected).children().each(function(index, value) {
+									console.log('test');
+									if (index == 0) {
+										$(value).text($('#name').val());
+									} else if (index == 1) {
+										$(value).text($('#surname').val());
+									} else if (index == 2) {
+										$(value).text($('#username').val());
+									} else if (index == 3) {
+										$(value).text($('#postal').val());
+									} else if (index == 4) {
+										$(value).text($('#city').val());
+									} else if (index == 5) {
+										$(value).text($('#street').val());
+									} else if (index == 6) {
+										$(value).text($('#mail').val());
+									}
+								});
+								$('#edit_adressbook').hide();
+								$('#mode').text('');
+								mode = false;
+							});
+						</script>
+					</fieldset>
+				</div>
+			</div>
+			<footer>
+
+			</footer>
 	</body>
 </html>
