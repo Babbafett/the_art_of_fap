@@ -75,6 +75,13 @@
 						</table>
 						<input id="change" type="button" value="edit"/>
 						<input id="delete" type="button" value="delete"/>
+						<script type="text/javascript">
+						        $('#delete').click(function(){ 
+                                   $(currentUi.selected).remove();
+                                   
+                                   setAdressbook();
+                              });
+						</script>
 						<div id="mode"></div>
 					</form>
 					<script type="text/javascript">
