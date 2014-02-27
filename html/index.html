@@ -85,26 +85,26 @@
 					<section id="location" style="display: block">
 						<p>
 						<label for="postal">PLZ: </label>
-						<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
+						<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition2"/>
 						<script type="text/javascript">
 							$('#postal').keyup(getLocationByPostal);
 						</script>
 
 						<label for="city">Ort: </label>
-						<input id="city" name="city" type="text" required/>
+						<input id="city" name="city" type="text" required class="inputfieldPosition2"/>
 						<script type="text/javascript">
 							$('#city').keyup(getLocationByCity);
 						</script>
 						</br>
 						<label for="street">Strasse: </label>
-						<input id="street" name="street" type="text" required/>
+						<input id="street" name="street" type="text" required class="inputfieldPosition2"/>
 						<script type="text/javascript">
 							var geocoder;
 							$('#street').keyup(getLocationByStreet);
 						</script>
 
 						<label for="country">Land: </label>
-						<input id="country" name="country" type="text" required/>
+						<input id="country" name="country" type="text" required class="inputfieldPosition2"/>
 						</p>
 						<div id="map" <!--style="width: 500px; height: 400px"--> ></div>
 					</section>
