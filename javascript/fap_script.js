@@ -400,43 +400,57 @@ function changeMode(mode) {
 }
 
 function getLocation(loginName) {
+	$('#location_search').hide();
 	geocoder = new google.maps.Geocoder();
 	var latlng;
-	$.ajax({
-		url : 'http://localhost/FAPServer/getStandort/' + loginName,
-		type : 'GET',
-		async : false,
-		dataType : 'json',
-		contentType : 'application/json',
-		success : function(data) {
-			$('#username').val(data.loginName);
-			latlng = JSON.stringify({
-				'lat' : data.standort.laengengrad,
-				'lng' : data.standort.breitengrad
-			});
-			var latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
-			geocoder.geocode({
-				'latLng' : latlng
-			}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					map.setZoom(15);
-					map.setCenter(results[0].geometry.location);
-					clearAllMarkers();
-					addMarker(new google.maps.Marker({
-						map : map,
-						position : results[0].geometry.location
-					}));
-					$('#city').val(results[0].address_components[2].long_name);
-					$('#country').val(results[0].address_components[5].long_name);
-					$('#street').val(results[0].address_components[1].long_name + ' ' + results[0].address_components[0].long_name);
+	var invalidUser = checkUsername();
+	if (!invalidUser) {
 
-				}
-			});
+		$.ajax({
+			url : 'http://localhost/FAPServer/getStandort/' + loginName,
+			type : 'GET',
+			async : false,
+			dataType : 'json',
+			contentType : 'application/json',
+			success : function(data) {
+				$('#surname').val(data.nachname);
+				$('#name').val(data.vorname);
+				$('#nameSearched').val(data.loginName);
+				latlng = JSON.stringify({
+					'lat' : data.standort.laengengrad,
+					'lng' : data.standort.breitengrad
+				});
+				var latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
+				geocoder.geocode({
+					'latLng' : latlng
+				}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						map.setZoom(15);
+						map.setCenter(results[0].geometry.location);
+						clearAllMarkers();
+						addMarker(new google.maps.Marker({
+							map : map,
+							position : results[0].geometry.location
+						}));
+						$('#city').val(results[0].address_components[2].long_name);
+						$('#country').val(results[0].address_components[5].long_name);
+						$('#postal').val(results[0].address_components[6].long_name);
+						$('#street').val(results[0].address_components[1].long_name + ' ' + results[0].address_components[0].long_name);
 
-		}
-	});
+					}
+				});
 
-	$('#location_search').show();
+			}
+		});
+
+		$('#location_search').show();
+	}
+	
+	else
+	{
+		alert('User not valid!');
+	}
+
 	return latlng;
 }
 

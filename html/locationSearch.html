@@ -9,7 +9,6 @@
 		<script type="text/javascript">
 			var map;
 			var markers = [];
-
 			var user = false;
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
@@ -46,23 +45,23 @@
 
 		<div id="main">
 			<form>
-				<label for="nameSearch">Username: </label>
-				<input id="nameSearch" type="text" required/>
-				<input type="button" value="Get location!" onclick="getLocation($('#nameSearch').val())"/>
+				<label for="username">Username: </label>
+				<input id="username" type="text" required/>
+				<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
 			</form>
 
 			<form id="location_search" accept-charset="utf-8">
 				<fieldset>
 					<section style="display: block">
-						<label for="surname">Name: </label>
+						<label for="surname">Surname: </label>
 						<input id="surname" name="surname" type="text" required/>
 
-						<label for="name">Surname: </label>
+						<label for="name">Name: </label>
 						<input id="name" name="name" type="text" required/>
 					</section>
 					<section id="personal" style="display: block">
-						<label for="username"> Username: </label>
-						<input id="username" name="username" type="text" required/>
+						<label for="nameSearched"> Username: </label>
+						<input id="nameSearched" name="username" type="text" required/>
 						<div id='check' style="display:inline"></div>
 						<script type="text/javascript">
 							$('#username').keyup(function() {
@@ -103,15 +102,6 @@
 							<input id="country" name="country" type="text" required/>
 						</p>
 						<div id="map" style="width: 500px; height: 400px" ></div>
-					</section>
-					<section id="communication" style="display: block">
-						<label for="mail">E-Mail: </label>
-						<input id="mail" name="mail" type="email" required/>
-					</section>
-
-					<section id="ui" style="display: block">
-						<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
-						<input type="submit" value="Abbrechen" />
 					</section>
 				</fieldset>
 
