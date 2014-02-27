@@ -7,6 +7,8 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var lat;
+			var lng;
 			var result;
 			var map;
 			var markers = [];
@@ -48,29 +50,6 @@
 		<div id="main">
 			<form name="add_Location" accept-charset="utf-8">
 				<fieldset>
-					<section style="display: block">
-						<label for="surname">Vorname: </label>
-						<input id="surname" name="surname" type="text" required/>
-
-						<label for="name">Nachname: </label>
-						<input id="name" name="name" type="text" required/>
-					</section>
-					<section id="personal" style="display: block">
-						<label for="username"> Benutzername: </label>
-						<input id="username" name="username" type="text" required/>
-						<div id='check' style="display:inline"></div>
-						<script type="text/javascript">
-							$('#username').keyup(function() {
-								user = checkUsername();
-								if (user) {
-									$('#check').text('Benutzername nicht vorhanden');
-								} else {
-									$('#check').text('Benutzername vorhanden');
-								}
-							});
-						</script>
-					</section>
-
 					<section id="location" style="display: block">
 						<p>
 							<label for="postal">PLZ: </label>
@@ -99,10 +78,7 @@
 						</p>
 						<div id="map" style="width: 500px; height: 400px" ></div>
 					</section>
-					<section id="communication" style="display: block">
-						<label for="mail">E-Mail: </label>
-						<input id="mail" name="mail" type="email" required/>
-					</section>
+
 
 					<section id="ui" style="display: block">
 						<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
