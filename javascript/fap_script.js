@@ -218,14 +218,14 @@ function generateCaptcha() {
 function login() {
 	$(document).ready(function() {
 
-		var user = false;
+		var user;
 		user = checkUsername();
 		console.log(user.toString());
-		if (user) {
+		if (!user) {
 			$.ajax({
-				url : 'http://localhost/FAPServer/Login',
+				url : 'http://localhost/FAPServer/login',
 				type : 'POST',
-				dataType : 'json',
+				dataType : 'text',
 				contentType : 'application/json',
 				data : JSON.stringify({
 					'loginName' : $('#username').val(),
@@ -233,7 +233,11 @@ function login() {
 						'passwort' : $('#password').val()
 					}
 				}),
+				error : function(xhr, status) {
+					console.log(status);
+				},
 				success : function(data) {
+					console.log('hallo');
 					if (data) {
 						var sessionId = data;
 						alert('Erfolgreich angemeldet');
