@@ -124,11 +124,11 @@ div#map{
 
 .inputfieldPosition1
 {
-position:fixed;
-left:750px;
+	position:fixed;
+	left:750px;
 }	
 
 .fieldColor
 {
-color:#ccc;	
+	color:#ccc;	
 }
