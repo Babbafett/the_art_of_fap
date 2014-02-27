@@ -435,6 +435,7 @@ function getLocation(loginName) {
 
 		}
 	});
+
 	$('#location_search').show();
 	return latlng;
 }
