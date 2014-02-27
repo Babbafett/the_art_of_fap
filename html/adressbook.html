@@ -21,171 +21,159 @@
 				background: #999;
 			}
 		</style>
-		<title>actual location</title>
+		<title>Address Book</title>
 	</head>
 	<body>
-		<header>
+		<div id="container">
 			<div id="header">
-				<h1>Welcome to The Art Of FAP!!!!</h1>
+				<div id="nav">
+					<ul id="nav">
+						<li>
+							<a href="register.html"> Register</a>
+						</li>
+						<li>
+							<a href="Index.html"> Index</a>
+						</li>
+						<li>
+							<a href="Login.html">Login</a>
+						</li>
+						<li>
+							<a href="adressbook.html">Adressbuch</a>
+						</li>
+					</ul>
+			  	</div>
+			  	<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>	
 			</div>
-
-		</header>
-		<nav>
-			<ul id="nav">
-				<li>
-					<a href="register.html"> Register</a>
-				</li>
-				<li>
-					<a href="index.html"> Index</a>
-				</li>
-				<li>
-					<a href="FelixTest.html"> Felix</a>
-				</li>
-				<li>
-					<a href="login">Login</a>
-				</li>
-				<li>
-					<a href="Adressbuch">Adressbuch</a>
-				</li>
-			</ul>
-
-		</nav>
-
-		<div id="main">
-			<form>
-				<table id="selectable">
-					<thead>
-						<th>Name</th>
-						<th>Vorname</th>
-						<th>Benutzername</th>
-						<th>PLZ</th>
-						<th>Ort</th>
-						<th>Strasse</th>
-						<th>E-Mail</th>
-					</thead>
-					<tbody id="tableBody">
-
-					</tbody>
-				</table>
-				<input id="change" type="button" value="edit"/>
-				<input id="delete" type="button" value="delete"/>
-				<div id="mode"></div>
-			</form>
-			<script type="text/javascript">
-				$('#abort').hide();
-				table = getContacts();
-				var loginName;
-				$('#tableBody').html(table);
-				$('#tableBody').selectable({
-					filter : 'tr',
-					selected : function(event, ui) {
-						currentUi = ui;
-
-						$(ui.selected).children().each(function(index, value) {
-							if (index == 0) {
-								$('#name').val($(value).text());
-							} else if (index == 1) {
-								$('#surname').val($(value).text());
-							} else if (index == 2) {
-								$('#username').val($(value).text());
-							} else if (index == 3) {
-								$('#postal').val($(value).text());
-							} else if (index == 4) {
-								$('#city').val($(value).text());
-							} else if (index == 5) {
-								$('#street').val($(value).text());
-							} else if (index == 6) {
-								$('#mail').val($(value).text());
+		</div>
+		<div id="content_container">
+			<div id="content">
+			  <span class="tab_l">Adressbook</span><br />
+			  <p> Here are your Friends!<br /></p>
+			</div>
+			<div id="main">
+				<fieldset>
+					<form>
+						<table id="selectable">
+							<thead>
+								<th class="fieldColor">Name</th>
+								<th class="fieldColor">Vorname</th>
+								<th class="fieldColor">Benutzername</th>
+								<th class="fieldColor">PLZ</th>
+								<th class="fieldColor">Ort</th>
+								<th class="fieldColor">Strasse</th>
+								<th class="fieldColor">E-Mail</th>
+							</thead>
+							<tbody id="tableBody">
+		
+							</tbody>
+						</table>
+						<input id="change" type="button" value="edit"/>
+						<input id="delete" type="button" value="delete"/>
+						<div id="mode"></div>
+					</form>
+					<script type="text/javascript">
+						$('#abort').hide();
+						table = getContacts();
+						var loginName;
+						$('#tableBody').html(table);
+						$('#tableBody').selectable({
+							filter : 'tr',
+							selected : function(event, ui) {
+								currentUi = ui;
+		
+								$(ui.selected).children().each(function(index, value) {
+									if (index == 0) {
+										$('#name').val($(value).text());
+									} else if (index == 1) {
+										$('#surname').val($(value).text());
+									} else if (index == 2) {
+										$('#username').val($(value).text());
+									} else if (index == 3) {
+										$('#postal').val($(value).text());
+									} else if (index == 4) {
+										$('#city').val($(value).text());
+									} else if (index == 5) {
+										$('#street').val($(value).text());
+									} else if (index == 6) {
+										$('#mail').val($(value).text());
+									}
+								});
 							}
 						});
-					}
-				});
-				$('#change').click(function() {
-					console.log(mode.toString());
-					mode = changeMode(mode);
-				});
-			</script>
-			<form name="edit_Location" id="edit_Location" accept-charset="utf-8">
-				<fieldset>
-					<section style="display: block">
-						<label for="surname">Vorname: </label>
-						<input id="surname" name="surname" type="text" required/>
-
-						<label for="name">Nachname: </label>
-						<input id="name" name="name" type="text" required/>
-					</section>
-					<section id="personal" style="display: block">
-						<label for="username"> Benutzername: </label>
-						<input id="username" name="username" type="text" required/>
-						<div id='check' style="display:inline"></div>
-						<script type="text/javascript">
-							$('#username').keyup(function() {
-								user = checkUsername();
-								if (user) {
-									$('#check').text('Benutzername nicht vorhanden');
-								} else {
-									$('#check').text('Benutzername vorhanden');
+						$('#change').click(function() {
+							console.log(mode.toString());
+							mode = changeMode(mode);
+						});
+					</script>
+					<form name="edit_Location" id="edit_Location" accept-charset="utf-8">
+						<fieldset>
+								<label for="surname" class="fieldColor" >Vorname: </label>
+								<input id="surname" name="surname" type="text" class="inputfieldPosition1" required/>
+								<br />
+								<label for="name" class="fieldColor" >Nachname: </label>
+								<input id="name" name="name" type="text" class="inputfieldPosition1" required/>
+								<br />
+								<label for="username" class="fieldColor" > Benutzername: </label>
+								<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
+								<div id='check' style="display:inline"></div>
+								<script type="text/javascript">
+									$('#username').keyup(function() {
+										user = checkUsername();
+										if (user) {
+											$('#check').text('Benutzername nicht vorhanden');
+										} else {
+											$('#check').text('Benutzername vorhanden');
+										}
+									});
+								</script>
+							<br />
+									<label for="postal" class="fieldColor" >PLZ: </label>
+									<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition1"/>
+									<br />
+									<label for="city" class="fieldColor" >Ort: </label>
+									<input id="city" name="city" type="text" class="inputfieldPosition1" required/>
+									<br />
+									<label for="street" class="fieldColor" >Strasse: </label>
+									<input id="street" name="street" type="text" class="inputfieldPosition1" required/>
+									<br />
+								<label for="mail" class="fieldColor" >E-Mail: </label>
+								<input id="mail" name="mail" type="email" class="inputfieldPosition1" required/>
+								<br />
+								<input type="button" id="editEntry" name="submit" value="OK"/>
+								<input type="button" value="abort" />
+						</fieldset>
+		
+					</form>
+					<script type="text/javascript">
+						$('#edit_Location').hide();
+		
+						$('#editEntry').click(function() {
+							$(currentUi.selected).children().each(function(index, value) {
+								console.log('test');
+								if (index == 0) {
+									$(value).text($('#name').val());
+								} else if (index == 1) {
+									$(value).text($('#surname').val());
+								} else if (index == 2) {
+									$(value).text($('#username').val());
+								} else if (index == 3) {
+									$(value).text($('#postal').val());
+								} else if (index == 4) {
+									$(value).text($('#city').val());
+								} else if (index == 5) {
+									$(value).text($('#street').val());
+								} else if (index == 6) {
+									$(value).text($('#mail').val());
 								}
 							});
-						</script>
-					</section>
-
-					<section id="location" style="display: block">
-						<p>
-							<label for="postal">PLZ: </label>
-							<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-
-							<label for="city">Ort: </label>
-							<input id="city" name="city" type="text" required/>
-						</p>
-
-						<p>
-							<label for="street">Strasse: </label>
-							<input id="street" name="street" type="text" required/>
-
-						</p>
-					</section>
-					<section id="communication" style="display: block">
-						<label for="mail">E-Mail: </label>
-						<input id="mail" name="mail" type="email" required/>
-					</section>
-
-					<section id="ui" style="display: block">
-						<input type="button" id="editEntry" name="submit" value="OK"/>
-						<input type="button" value="abort" />
-					</section>
+							$('#edit_Location').hide();
+							$('#mode').text('');
+							mode = false;
+						});
+					</script>
 				</fieldset>
-
-			</form>
-			<script type="text/javascript">
-				$('#edit_Location').hide();
-
-				$('#editEntry').click(function() {
-					$(currentUi.selected).children().each(function(index, value) {
-						console.log('test');
-						if (index == 0) {
-							$(value).text($('#name').val());
-						} else if (index == 1) {
-							$(value).text($('#surname').val());
-						} else if (index == 2) {
-							$(value).text($('#username').val());
-						} else if (index == 3) {
-							$(value).text($('#postal').val());
-						} else if (index == 4) {
-							$(value).text($('#city').val());
-						} else if (index == 5) {
-							$(value).text($('#street').val());
-						} else if (index == 6) {
-							$(value).text($('#mail').val());
-						}
-					});
-					$('#edit_Location').hide();
-					$('#mode').text('');
-					mode = false;
-				});
-			</script>
+			</div>
 		</div>
-
 		<footer>
 
 		</footer>
