@@ -7,14 +7,10 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
-			var result;
-			var geocoder;
-			var map;
-			var markers = [];
-			var captcha = false;
 			var user = false;
 			var table;
-			google.maps.event.addDomListener(window, 'load', initialize);
+			var mode = false;
+			var currentUi;
 		</script>
 		<link rel="stylesheet" type="text/css" href="../css/adressbook.css"/>
 		<style>
@@ -71,33 +67,42 @@
 
 					</tbody>
 				</table>
-				<input type="button" value="Bearbeiten"/>
-				<input type="button" value="L&ouml;schen"/>
-				<input type="button" value="Abbrechen"/>
+				<input id="change" type="button" value="edit"/>
+				<input id="delete" type="button" value="delete"/>
+				<div id="mode"></div>
 			</form>
 			<script type="text/javascript">
+				$('#abort').hide();
 				table = getContacts();
 				var loginName;
 				$('#tableBody').html(table);
 				$('#tableBody').selectable({
 					filter : 'tr',
 					selected : function(event, ui) {
-						$('#edit_Location').show();
+						currentUi = ui;
+
 						$(ui.selected).children().each(function(index, value) {
 							if (index == 0) {
 								$('#name').val($(value).text());
 							} else if (index == 1) {
 								$('#surname').val($(value).text());
 							} else if (index == 2) {
-								loginName = $(value).text();
+								$('#username').val($(value).text());
 							} else if (index == 3) {
 								$('#postal').val($(value).text());
+							} else if (index == 4) {
+								$('#city').val($(value).text());
+							} else if (index == 5) {
+								$('#street').val($(value).text());
 							} else if (index == 6) {
 								$('#mail').val($(value).text());
 							}
 						});
-						getLocation(loginName);
 					}
+				});
+				$('#change').click(function() {
+					console.log(mode.toString());
+					mode = changeMode(mode);
 				});
 			</script>
 			<form name="edit_Location" id="edit_Location" accept-charset="utf-8">
@@ -129,29 +134,16 @@
 						<p>
 							<label for="postal">PLZ: </label>
 							<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-							<script type="text/javascript">
-								$('#postal').keyup(getLocationByPostal);
-							</script>
 
 							<label for="city">Ort: </label>
 							<input id="city" name="city" type="text" required/>
-							<script type="text/javascript">
-								$('#city').keyup(getLocationByCity);
-							</script>
 						</p>
 
 						<p>
 							<label for="street">Strasse: </label>
 							<input id="street" name="street" type="text" required/>
-							<script type="text/javascript">
-								var geocoder;
-								$('#street').keyup(getLocationByStreet);
-							</script>
 
-							<label for="country">Land: </label>
-							<input id="country" name="country" type="text" required/>
 						</p>
-						<div id="map" style="width: 500px; height: 400px" ></div>
 					</section>
 					<section id="communication" style="display: block">
 						<label for="mail">E-Mail: </label>
@@ -159,14 +151,38 @@
 					</section>
 
 					<section id="ui" style="display: block">
-						<input type="button" name="submit" value="OK" onclick="editLocation(edit_Location)"/>
-						<input type="submit" value="Abbrechen" />
+						<input type="button" id="editEntry" name="submit" value="OK"/>
+						<input type="button" value="abort" />
 					</section>
 				</fieldset>
 
 			</form>
 			<script type="text/javascript">
 				$('#edit_Location').hide();
+
+				$('#editEntry').click(function() {
+					$(currentUi.selected).children().each(function(index, value) {
+						console.log('test');
+						if (index == 0) {
+							$(value).text($('#name').val());
+						} else if (index == 1) {
+							$(value).text($('#surname').val());
+						} else if (index == 2) {
+							$(value).text($('#username').val());
+						} else if (index == 3) {
+							$(value).text($('#postal').val());
+						} else if (index == 4) {
+							$(value).text($('#city').val());
+						} else if (index == 5) {
+							$(value).text($('#street').val());
+						} else if (index == 6) {
+							$(value).text($('#mail').val());
+						}
+					});
+					$('#edit_Location').hide();
+					$('#mode').text('');
+					mode = false;
+				});
 			</script>
 		</div>
 

@@ -361,34 +361,77 @@ function getContacts() {
 	return table;
 }
 
-function getLocation(loginName) {
-	geocoder = new google.maps.Geocoder();
-	$.ajax({
-		url : 'http://localhost/FAPServer/getStandort/' + loginName,
-		type : 'GET',
-		dataType : 'json',
-		contentType : 'application/json',
-		success : function(data) {
-			$('#username').val(data.loginName);
-			var latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
-			geocoder.geocode({
-				'latLng' : latlng
-			}, function(results, status) {
-				if (status == google.maps.GeocoderStatus.OK) {
-					map.setZoom(15);
-					map.setCenter(results[0].geometry.location);
-					clearAllMarkers();
-					addMarker(new google.maps.Marker({
-						map : map,
-						position : results[0].geometry.location
-					}));
-					$('#city').val(results[0].address_components[2].long_name);
-					$('#country').val(results[0].address_components[5].long_name);
-					$('#street').val(results[0].address_components[1].long_name + ' ' + results[0].address_components[0].long_name);
+function editEntry() {
 
-				}
-			});
-
-		}
-	});
 }
+
+function changeMode(mode) {
+	var status;
+	if (!mode) {
+		status = true;
+		$('#edit_Location').show();
+		$('#abort').show();
+		$('#mode').text('Change mode on');
+		$(ui.selected).children().each(function(index, value) {
+			if (index == 0) {
+				$('#name').val($(value).text());
+			} else if (index == 1) {
+				$('#surname').val($(value).text());
+			} else if (index == 2) {
+				$('#username').val($(value).text());
+			} else if (index == 3) {
+				$('#postal').val($(value).text());
+			} else if (index == 4) {
+				$('#city').val($(value).text());
+			} else if (index == 5) {
+				$('#street').val($(value).text());
+			} else if (index == 6) {
+				$('#mail').val($(value).text());
+			}
+		});
+	} else {
+		status = false;
+		$('#edit_Location').hide();
+		$('#abort').hide();
+		$('#mode').text('');
+	}
+	return status;
+}
+
+/*
+ function getLocation(loginName) {
+ geocoder = new google.maps.Geocoder();
+ var latlng;
+ $.ajax({
+ url : 'http://localhost/FAPServer/getStandort/' + loginName,
+ type : 'GET',
+ async: false,
+ dataType : 'json',
+ contentType : 'application/json',
+ success : function(data) {
+ $('#username').val(data.loginName);
+ latlng = JSON.stringify({ 'lat': data.standort.laengengrad, 'lng': data.standort.breitengrad});
+ var latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
+ geocoder.geocode({
+ 'latLng' : latlng
+ }, function(results, status) {
+ if (status == google.maps.GeocoderStatus.OK) {
+ map.setZoom(15);
+ map.setCenter(results[0].geometry.location);
+ clearAllMarkers();
+ addMarker(new google.maps.Marker({
+ map : map,
+ position : results[0].geometry.location
+ }));
+ $('#city').val(results[0].address_components[2].long_name);
+ $('#country').val(results[0].address_components[5].long_name);
+ $('#street').val(results[0].address_components[1].long_name + ' ' + results[0].address_components[0].long_name);
+
+ }
+ });
+
+ }
+ });
+ return latlng;
+ }
+ */
