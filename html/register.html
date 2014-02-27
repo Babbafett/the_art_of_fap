@@ -15,68 +15,66 @@
 			var user = false;
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
+		<title>The Art of Fap</title>
 		<link rel="stylesheet" type="text/css" href="../css/register.css"/>
-		<title>register</title>
 	</head>
-	<body>
-		<header>
-			<div id="header">
-				<h1>Welcome to The Art Of FAP!!!!</h1>
-			</div>
-
-		</header>
-		<nav>
-			<ul id="nav">
-				<li>
-					<a href="register.html"> Register</a>
-				</li>
-				<li>
-					<a href="index.html"> Index</a>
-				</li>
-				<li>
-					<a href="FelixTest.html"> Felix</a>
-				</li>
-				<li>
-					<a href="login">Login</a>
-				</li>
-				<li>
-					<a href="Adressbuch">Adressbuch</a>
-				</li>
-			</ul>
-
-		</nav>
-
-		<div id="main">
-			<form name="edit_User" accept-charset="utf-8">
+<body>
+	<div id="container">
+		  <div id="header">
+			  <div id="nav">
+			  <ul id="nav">
+					<li>
+						<a href="register.html"> Register</a>
+					</li>
+					<li>
+						<a href="Index.html"> Index</a>
+					</li>
+					<li>
+						<a href="Login.html">Login</a>
+					</li>
+					<li>
+						<a href="Adressbuch">Adressbuch</a>
+					</li>
+				</ul>
+			  </div>
+			  <h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
+		  </div>
+		
+		  <div id="content_container">
+		
+			  <div id="content">
+			  <span class="tab_l">Welcome to The Art of Fap</span><br />
+			  <p> Here You learn the Art of Fap<br /></p>
+			  </div>
+			  
+			  		<div id="main">
+			<form name="add_User" accept-charset="utf-8">
 				<fieldset>
 					<section style="display: block">
-						<label for="surname">Vorname: </label>
-						<input id="surname" name="surname" type="text" required/>
-
-						<label for="name">Nachname: </label>
-						<input id="name" name="name" type="text" required/>
+						<label for="surname" class="fieldColor">Vorname: </label>
+						<input id="surname" name="surname" type="text" class="inputfieldPosition1" required/>
+						<br />
+						
+						<label for="name" class="fieldColor">Nachname: </label>
+						<input id="name" name="name" type="text" class="inputfieldPosition1" required/>
+						<br />
+						
 					</section>
 					<section id="personal" style="display: block">
-						<label for="username">Gew&uuml;nschter
-							<br>
+						<label for="username" class="fieldColor">Gew&uuml;nschter
 							Benutzername: </label>
-						<input id="username" name="username" type="text" required/>
+						<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
 						<div id='check' style="display:inline"></div>
 						<script type="text/javascript">
-							$('#username').keyup(function() {
-								user = checkUsername();
-								if (user) {
-									$('#check').text('Benutzername verfügbar');
-								} else {
-									$('#check').text('Benutzername nicht verfügbar');
-								}
-							});
+							$('#username').keyup(checkUsername);
 						</script>
 					</section>
 					<section id="credentials" style="display: block">
-						<label for="password">Passwort: </label>
-						<input id="password" name="password" type="password" maxlength="20" required/>
-						<input id="password_check" name="password_check" type="password" maxlength="20" required/>
+						<label for="password" class="fieldColor">Passwort: </label>
+						<input id="password" name="password" type="password" maxlength="20" class="inputfieldPosition1" required/>
+						<br />
+						<label for="password" class="fieldColor">Passwort bestätigen: </label>
+						<input id="password_check" name="password_check" type="password" maxlength="20" class="inputfieldPosition1" required/>
 						<div id="password_validate" style="display:inline"></div>
 						<script type="text/javascript">
 							$('#password_check').keyup(passwordCheck);
@@ -86,39 +84,37 @@
 					</section>
 					<section id="location" style="display: block">
 						<p>
-							<label for="postal">PLZ: </label>
-							<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-							<script type="text/javascript">
-								$('#postal').keyup(getLocationByPostal);
-							</script>
+						<label for="postal">PLZ: </label>
+						<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition2"/>
+						<script type="text/javascript">
+							$('#postal').keyup(getLocationByPostal);
+						</script>
 
-							<label for="city">Ort: </label>
-							<input id="city" name="city" type="text" required/>
-							<script type="text/javascript">
-								$('#city').keyup(getLocationByCity);
-							</script>
-						</p>
+						<label for="city">Ort: </label>
+						<input id="city" name="city" type="text" required class="inputfieldPosition2"/>
+						<script type="text/javascript">
+							$('#city').keyup(getLocationByCity);
+						</script>
+						</br>
+						<label for="street">Strasse: </label>
+						<input id="street" name="street" type="text" required class="inputfieldPosition2"/>
+						<script type="text/javascript">
+							var geocoder;
+							$('#street').keyup(getLocationByStreet);
+						</script>
 
-						<p>
-							<label for="street">Strasse: </label>
-							<input id="street" name="street" type="text" required/>
-							<script type="text/javascript">
-								var geocoder;
-								$('#street').keyup(getLocationByStreet);
-							</script>
-
-							<label for="country">Land: </label>
-							<input id="country" name="country" type="text" required/>
+						<label for="country">Land: </label>
+						<input id="country" name="country" type="text" required class="inputfieldPosition2"/>
 						</p>
 						<div id="map" <!--style="width: 500px; height: 400px"--> ></div>
 					</section>
 					<section id="communication" style="display: block">
-						<label for="mail">E-Mail: </label>
-						<input id="mail" name="mail" type="email" required/>
+						<label for="mail" class="fieldColor">E-Mail: </label>
+						<input id="mail" name="mail" type="email" class="inputfieldPosition1" required/>
 					</section>
 					<section id="captcha_validate" style="display: block">
-						<label id="captcha_label" for="captcha"></label>
-						<input id="captcha" name="captcha" type="text" pattern="[0-9]{2}" required/>
+						<label id="captcha_label" for="captcha" class="fieldColor"></label>
+						<input id="captcha" name="captcha" type="text" pattern="[0-9]{2}" class="inputfieldPosition1" required/>
 						<div id='check_captcha' style="display:inline"></div>
 						<script type="text/javascript">
 							generateCaptcha();
@@ -133,9 +129,8 @@
 
 			</form>
 		</div>
-
-		<footer>
-
-		</footer>
-	</body>
+		  </div>
+		  <div id="footer">&copy; 2014 The Art of FAP</div>
+	</div>
+</body>
 </html>
