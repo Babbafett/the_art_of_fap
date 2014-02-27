@@ -124,8 +124,18 @@ div#map{
 
 .inputfieldPosition1
 {
+<<<<<<< HEAD
 	position:fixed;
 	left:750px;
+=======
+top:10px;
+margin:-1%;
+border:2px;
+position:relative;
+float:right;
+
+
+>>>>>>> ea4ce17a93d4bbc80fe5bfdf5fa84ec621cff69f
 }	
 
 .fieldColor
