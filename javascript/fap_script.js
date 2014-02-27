@@ -240,7 +240,7 @@ function login() {
 					console.log('hallo');
 					if (data) {
 						var sessionId = data;
-						readCookieSessionId($('#username').val(), sessionId, 7);
+						createCookie($('#username').val(), sessionId, 7);
 						//alert('SessionID from Cookie: ' + readCookieSessionId());
 						//alert('Username from Cookie: ' + readCookieUserName());
 						location.href = "http://localhost/fap_client/html/index.html";
@@ -261,7 +261,7 @@ function createCookie(name, value, days) {
 	} else
 		var expires = "";
 
-	document.cookie = name + "=" + value + expires + "; path=/";
+	document.cookie = name + "=" + value + expires + "; path=http://localhost/fap_client/html/index.html";
 }
 
 function readCookieSessionId() {
@@ -287,6 +287,14 @@ function readCookieUserName() {
 	return cookieString.substring(0, index);
 
 }
+
+function deleteCookie() {
+	
+	var name = readCookieUserName();
+	
+	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 function editLocation(editLocation) {
 
 }
