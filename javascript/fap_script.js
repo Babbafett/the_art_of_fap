@@ -295,14 +295,6 @@ function deleteCookie() {
 	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-function editLocation(editLocation) {
-
-}
-
-function addLocation(add_Location) {
-
-}
-
 function getContacts() {
 	var table;
 	$.ajax({
@@ -359,10 +351,6 @@ function getContacts() {
 	});
 	console.log(table);
 	return table;
-}
-
-function editEntry() {
-
 }
 
 function changeMode(mode) {
