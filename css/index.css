@@ -26,6 +26,10 @@ p{
 	text-align: justify;
 	margin-left: 100px;
 	}
+
+div#main{
+	color:#ccc;	
+}
 	
 div#header {
 	height:100px;
