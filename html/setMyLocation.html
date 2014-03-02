@@ -30,7 +30,7 @@
 			<div id="header">
 
 				<div id="nav">
-					<ul id="nav">
+					<ul id="nav2">
 						<li>
 							<a href="register.html"> Register</a>
 						</li>
@@ -51,6 +51,15 @@
 						</li>
 					</ul>
 				</div>
+				<script type="text/javascript">
+					if (sessionID != '') {
+						$('#nav2').children().each(function(index, value) {
+							if (index == 2) {
+								$(value).html('<a href ="#" onClick="deleteCookie()">Logout</a>');
+							}
+						});
+					}
+				</script>
 				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 
 			</div>
