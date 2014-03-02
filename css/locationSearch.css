@@ -41,6 +41,10 @@ form{
 div#header {
 	height:100px;
 	}
+
+div#main{
+	color:#ccc;	
+}
 	
 div#nav {
 	width:250px;
