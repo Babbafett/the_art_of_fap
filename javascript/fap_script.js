@@ -481,6 +481,66 @@ function setAdressbook() {
 	});
 	json = json + ']}';
 	json = JSON.stringify(json);
+
+	$.ajax({
+		url : 'http://localhost/FAPServer/setAdressbuch',
+		type : 'PUT',
+		dataType : 'json',
+		contentType : 'application/json',
+		data : json,
+		error : function(xhr, status) {
+			console.log(status);
+		},
+		success : function(data) {
+			if (data) {
+				alert('Adressbook is set');
+			} else {
+				alert('Adressbook not set');
+			}
+		}
+	});
 	console.log(json.toString());
 
+}
+
+function addContact() {
+	var table;
+
+	table += '<tr><td>';
+	if ( typeof $('#name').val() === 'undefined') {
+		table += '</td>';
+	} else {
+		table += $('#name').val() + '</td>';
+	}
+	if ( typeof $('#surname').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#surname').val() + '</td>';
+	}
+	if ( typeof $('#username').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#username').val() + '</td>';
+	}
+	if ( typeof $('#postal').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#postal').val() + '</td>';
+	}
+	if ( typeof $('#city').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#city').val() + '</td>';
+	}
+	if ( typeof $('#street').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#street').val() + '</td>';
+	}
+	if ( typeof $('#mail').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#mail').val() + '</td>';
+	}
+	return table;
 }
