@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -43,77 +44,81 @@
 					<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 			</header>
 	<div id="content_container">	
-	<div id="content">
-		<span class="tab_l">Location-Search</span><br />
-			<div id="main">
-				<form>
-					<label for="username">Username: </label>
-					<input id="username" type="text" required/>
-					<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
-				</form>
-	
-				<form id="location_search" accept-charset="utf-8">
-					<fieldset>
-						<section style="display: block">
-							<label for="surname">Surname: </label>
-							<input id="surname" name="surname" type="text" required/>
-	
-							<label for="name">Name: </label>
-							<input id="name" name="name" type="text" required/>
-						</section>
-						<section id="personal" style="display: block">
-							<label for="nameSearched"> Username: </label>
-							<input id="nameSearched" name="username" type="text" required/>
-							<div id='check' style="display:inline"></div>
-							<script type="text/javascript">
-								$('#username').keyup(function() {
-									user = checkUsername();
-									if (user) {
-										$('#check').text('Benutzername nicht vorhanden');
-									} else {
-										$('#check').text('Benutzername vorhanden');
-									}
-								});
-							</script>
-						</section>
-	
-						<section id="location" style="display: block">
-							<p>
-								<label for="postal">Postal code: </label>
-								<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
-								<script type="text/javascript">
-									$('#postal').keyup(getLocationByPostal);
-								</script>
-	
-								<label for="city">Ort: </label>
-								<input id="city" name="city" type="text" required/>
-								<script type="text/javascript">
-									$('#city').keyup(getLocationByCity);
-								</script>
-							</p>
-	
-							<p>
-								<label for="street">Strasse: </label>
-								<input id="street" name="street" type="text" required/>
-								<script type="text/javascript">
-									var geocoder;
-									$('#street').keyup(getLocationByStreet);
-								</script>
-	
-								<label for="country">Land: </label>
-								<input id="country" name="country" type="text" required/>
-							</p>
-							<div id="map" style="width: 500px; height: 400px" ></div>
-						</section>
-					</fieldset>
-	
-				</form>
-	
-				<script type="text/javascript">
-					$('#location_search').hide();
-				</script>
-			</div>
+		<div id="content">
+			<span class="tab_l">Location-Search</span><br />
+			<p> Search you friend so you can stick a knife into his back!<br /></p>
+			
 		</div>
+				<div id="main">
+					<fieldset>
+					<form>
+						<label for="username">Username: </label>
+						<input id="username" type="text" required/>
+						<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
+					</form>
+					</fieldset>
+					<form id="location_search" accept-charset="utf-8">
+						<fieldset>
+							<section style="display: block">
+								<label for="surname">Surname: </label>
+								<input id="surname" name="surname" type="text" required/>
+		
+								<label for="name">Name: </label>
+								<input id="name" name="name" type="text" required/>
+							</section>
+							<section id="personal" style="display: block">
+								<label for="nameSearched"> Username: </label>
+								<input id="nameSearched" name="username" type="text" required/>
+								<div id='check' style="display:inline"></div>
+								<script type="text/javascript">
+									$('#username').keyup(function() {
+										user = checkUsername();
+										if (user) {
+											$('#check').text('Benutzername nicht vorhanden');
+										} else {
+											$('#check').text('Benutzername vorhanden');
+										}
+									});
+								</script>
+							</section>
+		
+							<section id="location" style="display: block">
+								<p>
+									<label for="postal">Postal code: </label>
+									<input id="postal" name="postal" type="text" pattern="[0-9]{5}"/>
+									<script type="text/javascript">
+										$('#postal').keyup(getLocationByPostal);
+									</script>
+		
+									<label for="city">Ort: </label>
+									<input id="city" name="city" type="text" required/>
+									<script type="text/javascript">
+										$('#city').keyup(getLocationByCity);
+									</script>
+								</p>
+		
+								<p>
+									<label for="street">Strasse: </label>
+									<input id="street" name="street" type="text" required/>
+									<script type="text/javascript">
+										var geocoder;
+										$('#street').keyup(getLocationByStreet);
+									</script>
+		
+									<label for="country">Land: </label>
+									<input id="country" name="country" type="text" required/>
+								</p>
+								<div id="map" style="width: 500px; height: 400px" ></div>
+							</section>
+						</fieldset>
+		
+					</form>
+		
+					<script type="text/javascript">
+						$('#location_search').hide();
+					</script>
+				</div>
+			</div>
 		</div>	
 
 		<div id="footer">&copy; 2014 The Art of FAP</div>
