@@ -7,6 +7,12 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var sessionID = readCookieSessionId();
+			console.log(sessionID.toString());
+			if ( typeof sessionID === 'undefined' || sessionID == '') {
+				alert('You are not logged in');
+				location.href = "http://localhost/fap_client/html/login.html";
+			}
 			var lat;
 			var lng;
 			var result;
@@ -22,45 +28,45 @@
 	<body>
 		<div id="container">
 			<div id="header">
-				
-					<div id="nav">
-						<ul id="nav">
-							<li>
-								<a href="register.html"> Register</a>
-							</li>
-							<li>
-								<a href="Index.html"> Index</a>
-							</li>
-							<li>
-								<a href="Login.html">Login</a>
-							</li>
-							<li>
-								<a href="adressbook.html">Adressbook</a>
-							</li>
-							<li>
-								<a href="locationSearch.html">Location search</a>
-							</li>
-							<li>
-								<a href="setMyLocation.html">Set my location</a>
-							</li>
-						</ul>
-					</div>
+
+				<div id="nav">
+					<ul id="nav">
+						<li>
+							<a href="register.html"> Register</a>
+						</li>
+						<li>
+							<a href="Index.html"> Index</a>
+						</li>
+						<li>
+							<a href="Login.html">Login</a>
+						</li>
+						<li>
+							<a href="adressbook.html">Adressbook</a>
+						</li>
+						<li>
+							<a href="locationSearch.html">Location search</a>
+						</li>
+						<li>
+							<a href="setMyLocation.html">Set my location</a>
+						</li>
+					</ul>
+				</div>
 				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
-				
+
 			</div>
-		<div id="content_container">
-			<div id="content">
+			<div id="content_container">
+				<div id="content">
 					<span class="tab_l">Set my location</span>
 					<br />
 					<p>
 						Tell us your position! If you do that, we can kill you easier!
 						<br />
 					</p>
-			</div>
-			<div id="main">
-				<form name="add_Location" accept-charset="utf-8">
-					<fieldset>
-						<section id="location" style="display: block">
+				</div>
+				<div id="main">
+					<form name="add_Location" accept-charset="utf-8">
+						<fieldset>
+							<section id="location" style="display: block">
 								<label for="postal" class="fieldColor">PLZ: </label>
 								<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition1"/>
 								<script type="text/javascript">
@@ -82,21 +88,28 @@
 								<br />
 								<label for="country" class="fieldColor">Land: </label>
 								<input id="country" name="country" type="text" class="inputfieldPosition1" required/>
-								<br /><br />
-							<div id="map" style="width: 500px; height: 400px" ></div>
-						</section>
-	
-	
-						<section id="ui" style="display: block">
-							<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
-							<input type="submit" value="Abbrechen" />
-						</section>
-					</fieldset>
-	
-				</form>
+								<br />
+								<br />
+								<div id="map" style="width: 500px; height: 400px" ></div>
+							</section>
+
+							<section id="ui" style="display: block">
+								<input type="button" name="submit" value="OK" onclick="addLocation(add_Location)"/>
+								<input type="submit" value="Abbrechen" />
+							</section>
+						</fieldset>
+
+					</form>
+				</div>
 			</div>
+
+			<footer>
+
+			</footer>
 		</div>
-		<div id="footer">&copy; 2014 The Art of FAP</div>
+		<div id="footer">
+			&copy; 2014 The Art of FAP
+		</div>
 		</div>
 	</body>
 </html>

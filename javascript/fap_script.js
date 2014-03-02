@@ -243,7 +243,7 @@ function login() {
 						createCookie($('#username').val(), sessionId, 7);
 						//alert('SessionID from Cookie: ' + readCookieSessionId());
 						//alert('Username from Cookie: ' + readCookieUserName());
-						location.href = "http://localhost/fap_client/html/index.html";
+						location.href = "http://localhost/fap_client/html/setMyLocation.html";
 					} else {
 						alert('Anmeldung fehlgeschlagen');
 					}
