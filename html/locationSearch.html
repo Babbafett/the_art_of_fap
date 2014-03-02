@@ -82,42 +82,34 @@
 						<fieldset>
 							<section style="display: block">
 								<label for="surname">Surname: </label>
-								<input id="surname" name="surname" type="text" readonly/>
+								<input id="surname" name="surname" type="text" readonly/><br />
 
 								<label for="name">Name: </label>
-								<input id="name" name="name" type="text" readonly/>
-							</section>
-							<section id="personal" style="display: block">
+								<input id="name" name="name" type="text" readonly/><br />
 								<label for="nameSearched"> Username: </label>
-								<input id="nameSearched" name="username" type="text" readonly/>
-							</section>
+								<input id="nameSearched" name="username" type="text" readonly/><br />
 
-							<section id="location" style="display: block">
-								<p>
-									<label for="postal">Postal code: </label>
-									<input id="postal" name="postal" type="text" readonly/>
-									<script type="text/javascript">
-										$('#postal').keyup(getLocationByPostal);
-									</script>
+								<label for="postal">Postal code: </label>
+								<input id="postal" name="postal" type="text" readonly/><br />
+								<script type="text/javascript">
+									$('#postal').keyup(getLocationByPostal);
+								</script>
+	
+								<label for="city">Ort: </label>
+								<input id="city" name="city" type="text" readonly/><br />
+								<script type="text/javascript">
+									$('#city').keyup(getLocationByCity);
+	
+								<label for="street">Strasse: </label>
+								<input id="street" name="street" type="text" readonly/><br />
+								<script type="text/javascript">
+									var geocoder;
+									$('#street').keyup(getLocationByStreet);
+								</script>
 
-									<label for="city">Ort: </label>
-									<input id="city" name="city" type="text" readonly/>
-									<script type="text/javascript">
-										$('#city').keyup(getLocationByCity);
-									</script>
-								</p>
+								<label for="country">Land: </label>
+								<input id="country" name="country" type="text" readonly/><br />
 
-								<p>
-									<label for="street">Strasse: </label>
-									<input id="street" name="street" type="text" readonly/>
-									<script type="text/javascript">
-										var geocoder;
-										$('#street').keyup(getLocationByStreet);
-									</script>
-
-									<label for="country">Land: </label>
-									<input id="country" name="country" type="text" readonly/>
-								</p>
 								<div id="map" style="width: 500px; height: 400px" ></div>
 							</section>
 						</fieldset>
