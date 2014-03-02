@@ -16,10 +16,10 @@
 		<link rel="stylesheet" type="text/css" href="../css/adressbook.css"/>
 		<style>
 			#selectable .ui-selecting {
-				background:#ccc;
+				background: #ccc;
 			}
 			#selectable .ui-selected {
-				background:#999;
+				background: #999;
 			}
 		</style>
 		<title>Address Book</title>
@@ -158,27 +158,34 @@
 							$('#edit_adressbook').hide();
 
 							$('#editEntry').click(function() {
-								$(currentUi.selected).children().each(function(index, value) {
-									console.log('test');
-									if (index == 0) {
-										$(value).text($('#name').val());
-									} else if (index == 1) {
-										$(value).text($('#surname').val());
-									} else if (index == 2) {
-										$(value).text($('#username').val());
-									} else if (index == 3) {
-										$(value).text($('#postal').val());
-									} else if (index == 4) {
-										$(value).text($('#city').val());
-									} else if (index == 5) {
-										$(value).text($('#street').val());
-									} else if (index == 6) {
-										$(value).text($('#mail').val());
-									}
-								});
+								if (!mode_add) {
+									$(currentUi.selected).children().each(function(index, value) {
+										console.log('test');
+										if (index == 0) {
+											$(value).text($('#name').val());
+										} else if (index == 1) {
+											$(value).text($('#surname').val());
+										} else if (index == 2) {
+											$(value).text($('#username').val());
+										} else if (index == 3) {
+											$(value).text($('#postal').val());
+										} else if (index == 4) {
+											$(value).text($('#city').val());
+										} else if (index == 5) {
+											$(value).text($('#street').val());
+										} else if (index == 6) {
+											$(value).text($('#mail').val());
+										}
+									});
+								} else {
+									var table = addContact();
+									$('#tableBody').append(table);
+									setAdressbook();
+								}
 								$('#edit_adressbook').hide();
 								$('#mode').text('');
 								mode = false;
+								mode_add = false;
 							});
 						</script>
 					</fieldset>
