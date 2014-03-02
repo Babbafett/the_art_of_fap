@@ -7,6 +7,7 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var sessionID = readCookieSessionId();
 			var result;
 			var map;
 			var markers = [];
@@ -34,7 +35,7 @@
 						</li>
 						<li>
 							<a href="Login.html">Login</a>
-						</li>						
+						</li>
 						<li>
 							<a href="locationSearch.html">Location search</a>
 						</li>
@@ -43,6 +44,15 @@
 						</li>
 					</ul>
 				</div>
+				<script type="text/javascript">
+					if (sessionID != '') {
+						$('#nav2').children().each(function(index, value) {
+							if (index == 3) {
+								$(value).html('<a href ="#" onClick="deleteCookie()">Logout</a>');
+							}
+						});
+					}
+				</script>
 				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 			</div>
 
