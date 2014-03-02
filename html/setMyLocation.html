@@ -37,10 +37,10 @@
 							<a href="Index.html"> Index</a>
 						</li>
 						<li>
-							<a href="Login.html">Login</a>
+							<a href="adressbook.html">Adressbook</a>
 						</li>
 						<li>
-							<a href="adressbook.html">Adressbook</a>
+							<a href="Login.html">Login</a>
 						</li>
 						<li>
 							<a href="locationSearch.html">Location search</a>
@@ -53,7 +53,7 @@
 				<script type="text/javascript">
 					if (sessionID != '') {
 						$('#nav2').children().each(function(index, value) {
-							if (index == 2) {
+							if (index == 3) {
 								$(value).html('<a href ="#" onClick="deleteCookie()">Logout</a>');
 							}
 						});
