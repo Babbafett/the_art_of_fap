@@ -28,31 +28,37 @@
 	<body>
 		<div id="container">
 			<div id="header">
-
-				
-					<div id="nav">
-						<ul id="nav2">
-							<li>
-								<a href="register.html"> Register</a>
-							</li>
-							<li>
-								<a href="Index.html"> Index</a>
-							</li>
-							<li>
-								<a href="adressbook.html">Adressbook</a>
-							</li>
-							<li>
-								<a href="Login.html">Login</a>
-							</li>							
-							<li>
-								<a href="locationSearch.html">Location search</a>
-							</li>
-							<li>
-								<a href="setMyLocation.html">Set my location</a>
-							</li>
-						</ul>
-					</div>
-
+				<div id="nav">
+					<ul id="nav2">
+						<li>
+							<a href="register.html"> Register</a>
+						</li>
+						<li>
+							<a href="Index.html"> Index</a>
+						</li>
+						<li>
+							<a href="Login.html">Login</a>
+						</li>
+						<li>
+							<a href="adressbook.html">Adressbook</a>
+						</li>
+						<li>
+							<a href="locationSearch.html">Location search</a>
+						</li>
+						<li>
+							<a href="setMyLocation.html">Set my location</a>
+						</li>
+					</ul>
+				</div>
+				<script type="text/javascript">
+					if (sessionID != '') {
+						$('#nav2').children().each(function(index, value) {
+							if (index == 2) {
+								$(value).html('<a href ="#" onClick="deleteCookie()">Logout</a>');
+							}
+						});
+					}
+				</script>
 				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 
 			</div>

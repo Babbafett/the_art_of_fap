@@ -7,6 +7,12 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7g1sf3vXgSCDBk7MPVjlUNGhaTBukXyk&sensor=true" type="text/javascript"></script>
 		<script src="../javascript/fap_script.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			var sessionID = readCookieSessionId();
+			console.log(sessionID.toString());
+			if ( typeof sessionID === 'undefined' || sessionID == '') {
+				alert('You are not logged in');
+				location.href = "http://localhost/fap_client/html/login.html";
+			}
 			var user = false;
 			var table;
 			var mode = false;
@@ -49,6 +55,15 @@
 						</li>
 					</ul>
 				</div>
+				<script type="text/javascript">
+					if (sessionID != '') {
+						$('#nav2').children().each(function(index, value) {
+							if (index == 2) {
+								$(value).html('<a href ="#" onClick="deleteCookie()">Logout</a>');
+							}
+						});
+					}
+				</script>
 				<h1><span class="h1first">The Art of Fap<span class="h1divider"></h1>
 			</div>
 			<div id="content_container">
@@ -190,9 +205,11 @@
 						</script>
 					</fieldset>
 				</div>
-				</div>
-				<div id="footer">&copy; 2014 The Art of FAP</div>
 			</div>
-			
+			<div id="footer">
+				&copy; 2014 The Art of FAP
+			</div>
+		</div>
+
 	</body>
 </html>
