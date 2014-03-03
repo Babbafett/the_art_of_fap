@@ -1,3 +1,33 @@
+google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
+	// setup our variables
+	var lat1 = this.lat();
+	var radianLat1 = lat1 * (Math.PI / 180 );
+	var lng1 = this.lng();
+	var radianLng1 = lng1 * (Math.PI / 180 );
+	var lat2 = newLatLng.lat();
+	var radianLat2 = lat2 * (Math.PI / 180 );
+	var lng2 = newLatLng.lng();
+	var radianLng2 = lng2 * (Math.PI / 180 );
+	// sort out the radius, MILES or KM?
+	var earth_radius = 3959;
+	// (km = 6378.1) OR (miles = 3959) - radius of the earth
+
+	// sort our the differences
+	var diffLat = (radianLat1 - radianLat2 );
+	var diffLng = (radianLng1 - radianLng2 );
+	// put on a wave (hey the earth is round after all)
+	var sinLat = Math.sin(diffLat / 2);
+	var sinLng = Math.sin(diffLng / 2);
+
+	// maths - borrowed from http://www.opensourceconnections.com/wp-content/uploads/2009/02/clientsidehaversinecalculation.html
+	var a = Math.pow(sinLat, 2.0) + Math.cos(radianLat1) * Math.cos(radianLat2) * Math.pow(sinLng, 2.0);
+
+	// work out the distance
+	var distance = earth_radius * 2 * Math.asin(Math.min(1, Math.sqrt(a)));
+
+	// return the distance
+	return distance;
+};
 function initialize() {
 	var mapOptions = {
 		center : new google.maps.LatLng(51, 7),
@@ -20,9 +50,6 @@ function addMarker(marker) {
 }
 
 function addUser(form) {
-	console.log(user.toString());
-	console.log(password_validate.toString());
-	console.log(captcha.toString());
 	if (user && password_validate && captcha) {
 
 		$.ajax({
@@ -41,7 +68,7 @@ function addUser(form) {
 				'plz' : $('#postal').val(),
 				'ort' : $('#city').val(),
 				'land' : $('#country').val(),
-				'telefon' : '012345678979',
+				'telefon' : $('#phone').val(),
 				'email' : {
 					'adresse' : $('#mail').val()
 				}
@@ -79,7 +106,6 @@ function checkUsername() {
 			console.log(status);
 		},
 		success : function(data) {
-			console.log('success');
 			if (data) {
 				user = false;
 			} else {
@@ -88,7 +114,6 @@ function checkUsername() {
 		}
 	});
 	return user;
-	console.log('fertig');
 
 }
 
@@ -97,10 +122,19 @@ function passwordCheck() {
 	var password = $('#password').val();
 	var password_check = $('#password_check').val();
 	if (password == password_check) {
-		$('#password_validate').text('Passwörter stimmen überein');
-		password_validate = true;
+		if (password.length < 8) {
+			$('#password_validate').text('password must have 8 characters');
+			password_validate = false;
+		} else if (password != '') {
+			$('#password_validate').text('passwords match');
+			password_validate = true;
+		} else if (password == '' || typeof password === 'undefined') {
+			$('#password_validate').text('password is emtpy');
+			password_validate = false;
+		}
+
 	} else {
-		$('#password_validate').text('Passwörter stimmen nicht überein');
+		$('#password_validate').text('passwords dont match');
 		password_validate = false;
 	};
 }
@@ -122,7 +156,7 @@ function getLocationByPostal() {
 				url : 'http://api.geonames.org/searchJSON?username=Babbafett',
 				dataType : 'jsonp',
 				data : {
-					name_equals : $('#city').val(),
+					name_equals : data.postalCodes[0].placeName,
 					featureClass : 'P',
 					style : 'full',
 					country : 'DE',
@@ -130,15 +164,19 @@ function getLocationByPostal() {
 					lang : 'de'
 				},
 				success : function(data) {
-					$('#country').val(data.geonames[0].countryName);
-					var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
-					map.setZoom(13);
-					map.setCenter(latlng);
-					clearAllMarkers();
-					addMarker(new google.maps.Marker({
-						map : map,
-						position : latlng
-					}));
+					if ( typeof data.geonames[0] != 'undefined') {
+						$('#country').val(data.geonames[0].countryName);
+						var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
+						lat = data.geonames[0].lat;
+						lng = data.geonames[0].lng;
+						map.setZoom(13);
+						map.setCenter(latlng);
+						clearAllMarkers();
+						addMarker(new google.maps.Marker({
+							map : map,
+							position : latlng
+						}));
+					}
 
 				}
 			});
@@ -160,15 +198,19 @@ function getLocationByCity() {
 			lang : 'de'
 		},
 		success : function(data) {
-			$('#country').val(data.geonames[0].countryName);
-			var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
-			map.setZoom(13);
-			map.setCenter(latlng);
-			clearAllMarkers();
-			addMarker(new google.maps.Marker({
-				map : map,
-				position : latlng
-			}));
+			if ( typeof data.geonames[0] != 'undefined') {
+				$('#country').val(data.geonames[0].countryName);
+				var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
+				lat = data.geonames[0].lat;
+				lng = data.geonames[0].lng;
+				map.setZoom(13);
+				map.setCenter(latlng);
+				clearAllMarkers();
+				addMarker(new google.maps.Marker({
+					map : map,
+					position : latlng
+				}));
+			}
 
 		}
 	});
@@ -177,8 +219,33 @@ function getLocationByCity() {
 
 function getLocationByStreet() {
 	geocoder = new google.maps.Geocoder();
+	var address;
+	if ($('#city').val() != '' && $('#postal').val() != '') {
+		if (postal && city) {
+			address = $('#street').val() + ' ' + city_string + ' ' + postal_string;
+		} else if (postal && !city) {
+			address = $('#street').val() + ' ' + postal_string;
+		} else if (!postal && city) {
+			address = $('#street').val() + ' ' + city_string;
+		} else {
+			if (( typeof postal_string !== 'undefined' && postal_string != '') && ( typeof city_string !== 'undefined' && city_string != '')) {
+				address = $('#street').val() + ' ' + city_string + ' ' + postal_string;
+			} else if ( typeof postal_string !== 'undefined' && postal_string != '') {
+				address = $('#street').val() + ' ' + postal_string;
+			} else if ( typeof city_string !== 'undefined' && city_string != '') {
+				address = $('#street').val() + ' ' + city_string;
+			} else {
+				address = $('#street').val();
+			}
+		}
+	} else {
+		address = $('#street').val();
+		postal = false;
+		city = false;
+	}
+
 	geocoder.geocode({
-		'address' : $('#street').val()
+		'address' : address
 	}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			map.setZoom(15);
@@ -188,9 +255,24 @@ function getLocationByStreet() {
 				map : map,
 				position : results[0].geometry.location
 			}));
-			$('#city').val(results[0].address_components[4].long_name);
-			$('#country').val(results[0].address_components[7].long_name);
-			$('#postal').val(results[0].address_components[8].long_name);
+
+			lat = results[0].geometry.location.lat;
+			lng = results[0].geometry.location.lng;
+
+			for (var i = 0; i < results[0].address_components.length; i++) {
+				for (var j = 0; j < results[0].address_components[i].types.length; j++) {
+					if (results[0].address_components[i].types[j] == 'locality') {
+						$('#city').val(results[0].address_components[i].long_name);
+						city = false;
+					} else if (results[0].address_components[i].types[j] == 'country') {
+						$('#country').val(results[0].address_components[i].long_name);
+					} else if (results[0].address_components[i].types[j] == 'postal_code') {
+						$('#postal').val(results[0].address_components[i].long_name);
+						postal = false;
+					}
+				}
+			}
+
 		}
 	});
 }
@@ -198,10 +280,10 @@ function getLocationByStreet() {
 function checkCaptcha() {
 	var input = $('#captcha').val();
 	if (result == input) {
-		$('#check_captcha').text('richtig');
+		$('#check_captcha').text('input right');
 		captcha = true;
 	} else {
-		$('#check_captcha').text('falsch');
+		$('#check_captcha').text('input wrong');
 		captcha = false;
 	};
 }
@@ -220,7 +302,6 @@ function login() {
 
 		var user;
 		user = checkUsername();
-		console.log(user.toString());
 		if (!user) {
 			$.ajax({
 				url : 'http://localhost/FAPServer/login',
@@ -237,13 +318,10 @@ function login() {
 					console.log(status);
 				},
 				success : function(data) {
-					console.log('hallo');
 					if (data) {
 						var sessionId = data;
 						createCookie($('#username').val(), sessionId, 7);
-						//alert('SessionID from Cookie: ' + readCookieSessionId());
-						//alert('Username from Cookie: ' + readCookieUserName());
-						location.href = "http://localhost/fap_client/html/setMyLocation.html";
+						location.href = "setMyLocation.html";
 					} else {
 						alert('Anmeldung fehlgeschlagen');
 					}
@@ -291,12 +369,40 @@ function readCookieUserName() {
 function deleteCookie() {
 
 	var name = readCookieUserName();
-
+	var json;
+	var username = readCookieUserName();
+	var session = readCookieSessionId();
+	json = JSON.stringify({
+		'loginName' : username.toString(),
+		'sitzung' : {
+			'sitzungsID' : session.toString()
+		}
+	});
 	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-	location.href = "http://localhost/fap_client/html/login.html";
+
+	$.ajax({
+		url : 'http://localhost/FAPServer/logout',
+		type : 'DELETE',
+		dataType : 'json',
+		contentType : 'application/json',
+		data : json,
+		error : function(xhr, status) {
+			console.log(status);
+		},
+		success : function(data) {
+			if (data) {
+				alert('Logout');
+			} else {
+				alert('Logout fail');
+			}
+		}
+	});
+	location.href = "login.html";
 }
 
 function getContacts() {
+	var username = readCookieUserName();
+	var session = readCookieSessionId();
 	var table;
 	$.ajax({
 		url : 'http://localhost/FAPServer/getAdressbuch',
@@ -305,8 +411,8 @@ function getContacts() {
 		dataType : 'json',
 		contentType : 'application/json',
 		data : {
-			id : 'peterl',
-			sid : '4711007'
+			id : username.toString(),
+			sid : session.toString()
 		},
 
 		success : function(data) {
@@ -347,41 +453,67 @@ function getContacts() {
 				} else {
 					table += '<td>' + data.kontakte[contact].email.adresse + '</td>';
 				}
+				if ( typeof data.kontakte[contact].telefon === 'undefined') {
+					table += '<td></td>';
+				} else {
+					table += '<td>' + data.kontakte[contact].telefon + '</td></tr>';
+				}
 			}
 		}
 	});
-	console.log(table);
 	return table;
 }
 
-function changeMode(mode) {
+function changeMode(active, mode) {
 	var status;
-	if (!mode) {
-		status = true;
-		$('#edit_adressbook').show();
-		$('#abort').show();
-		$('#mode').text('Change mode on');
-		$(ui.selected).children().each(function(index, value) {
-			if (index == 0) {
-				$('#name').val($(value).text());
-			} else if (index == 1) {
-				$('#surname').val($(value).text());
-			} else if (index == 2) {
-				$('#username').val($(value).text());
-			} else if (index == 3) {
-				$('#postal').val($(value).text());
-			} else if (index == 4) {
-				$('#city').val($(value).text());
-			} else if (index == 5) {
-				$('#street').val($(value).text());
-			} else if (index == 6) {
-				$('#mail').val($(value).text());
-			}
-		});
-	} else {
-		status = false;
-		$('#edit_adressbook').hide();
-		$('#mode').text('');
+	if (mode == 1) {
+		if (!active) {
+			status = true;
+			$('#edit_adressbook').show();
+			$('#mode').text('Change mode on');
+			$(currentUi.selected).children().each(function(index, value) {
+				if (index == 0) {
+					$('#name').val($(value).text());
+				} else if (index == 1) {
+					$('#surname').val($(value).text());
+				} else if (index == 2) {
+					$('#username').val($(value).text());
+				} else if (index == 3) {
+					$('#postal').val($(value).text());
+				} else if (index == 4) {
+					$('#city').val($(value).text());
+				} else if (index == 5) {
+					$('#street').val($(value).text());
+				} else if (index == 6) {
+					$('#mail').val($(value).text());
+				} else if (index == 7) {
+					$('#phone').val($(value).text());
+				}
+			});
+		} else {
+			status = false;
+			$('#edit_adressbook').hide();
+			$('#mode').text('');
+		}
+	} else if (mode == 2) {
+		if (!active) {
+			status = true;
+			$('#mode').text('Add Mode on');
+			$('#name').val(null);
+			$('#surname').val(null);
+			$('#username').val(null);
+			$('#postal').val(null);
+			$('#city').val(null);
+			$('#street').val(null);
+			$('#mail').val(null);
+			$('#phone').val(null);
+			$('#edit_adressbook').show();
+		} else {
+			status = false;
+			$('#edit_adressbook').hide();
+			$('#mode').text('');
+		}
+
 	}
 
 	return status;
@@ -393,7 +525,8 @@ function getLocation(loginName) {
 	var latlng;
 	var invalidUser = checkUsername();
 	if (!invalidUser) {
-
+		$('#location_search').show();
+		initialize();
 		$.ajax({
 			url : 'http://localhost/FAPServer/getStandort/' + loginName,
 			type : 'GET',
@@ -420,10 +553,23 @@ function getLocation(loginName) {
 							map : map,
 							position : results[0].geometry.location
 						}));
-						$('#city').val(results[0].address_components[2].long_name);
-						$('#country').val(results[0].address_components[5].long_name);
-						$('#postal').val(results[0].address_components[6].long_name);
-						$('#street').val(results[0].address_components[1].long_name + ' ' + results[0].address_components[0].long_name);
+						var street;
+						for (var i = 0; i < results[0].address_components.length; i++) {
+							for (var j = 0; j < results[0].address_components[i].types.length; j++) {
+								if (results[0].address_components[i].types[j] == 'locality') {
+									$('#city').val(results[0].address_components[i].long_name);
+								} else if (results[0].address_components[i].types[j] == 'country') {
+									$('#country').val(results[0].address_components[i].long_name);
+								} else if (results[0].address_components[i].types[j] == 'postal_code') {
+									$('#postal').val(results[0].address_components[i].long_name);
+								} else if (results[0].address_components[i].types[j] == 'route') {
+									street = results[0].address_components[i].long_name;
+								} else if (results[0].address_components[i].types[j] == 'street_number') {
+									street += results[0].address_components[i].long_name;
+								}
+							}
+						}
+						$('#street').val(street);
 
 					}
 				});
@@ -431,7 +577,6 @@ function getLocation(loginName) {
 			}
 		});
 
-		$('#location_search').show();
 	} else {
 		alert('User not valid!');
 	}
@@ -447,6 +592,7 @@ function setAdressbook() {
 	var value5;
 	var value6;
 	var value7;
+	var value8;
 	var json;
 	var count = 1;
 	var string;
@@ -472,10 +618,12 @@ function setAdressbook() {
 				value6 = $(v).text();
 			} else if (i == 6) {
 				value7 = $(v).text();
+			} else if (i == 7) {
+				value8 = $(v).text();
 			}
 
 		});
-		string = "{'nachname' :" + value1 + ",'vorname' :" + value2 + ",'benutzername' :" + value3 + ",'PLZ' :" + value4 + ",'ort' :" + value5 + ",'strasse' :" + value6 + ",'mail' :" + value7 + "}";
+		string = "{'nachname' :" + value1 + ",'vorname' :" + value2 + ",'benutzername' :" + value3 + ",'PLZ' :" + value4 + ",'ort' :" + value5 + ",'strasse' :" + value6 + ",'mail' :" + value7 + ", 'telefon' :" + value8 + "}";
 
 		json = json + string;
 		count++;
@@ -500,7 +648,6 @@ function setAdressbook() {
 			}
 		}
 	});
-	console.log(json.toString());
 
 }
 
@@ -543,5 +690,146 @@ function addContact() {
 	} else {
 		table += '<td>' + $('#mail').val() + '</td>';
 	}
+	if ( typeof $('#phone').val() === 'undefined') {
+		table += '<td></td>';
+	} else {
+		table += '<td>' + $('#phone').val() + '</td>';
+	}
+	return table;
+}
+
+function setLocation(lat, lng) {
+	var json;
+	var username = readCookieUserName();
+	var session = readCookieSessionId();
+	json = JSON.stringify({
+		'loginName' : username.toString(),
+		'sitzung' : {
+			'sitzungsID' : session.toString()
+		},
+		'standort' : {
+			'breitengrad' : lng.toString(),
+			'laengengrad' : lat.toString()
+		}
+	});
+	$.ajax({
+		url : 'http://localhost/FAPServer/setStandort',
+		type : 'PUT',
+		dataType : 'json',
+		contentType : 'application/json',
+		data : json,
+		error : function(xhr, status) {
+			console.log(status);
+		},
+		success : function(data) {
+			if (data) {
+				alert('Location is set');
+			} else {
+				alert('Location is not set');
+			}
+		}
+	});
+	location.href = "addressbook.html";
+
+}
+
+function getNearbyPeople(radius) {
+	$('tableBody').html('');
+	var username = readCookieUserName();
+	var session = readCookieSessionId();
+	var latlng;
+	var table;
+	$.ajax({
+		url : 'http://localhost/FAPServer/getStandort/' + username,
+		type : 'GET',
+		async : false,
+		dataType : 'json',
+		contentType : 'application/json',
+		success : function(data) {
+			latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
+		}
+	});
+	$.ajax({
+		url : 'http://localhost/FAPServer/getAdressbuch',
+		type : 'GET',
+		async : false,
+		dataType : 'json',
+		contentType : 'application/json',
+		data : {
+			id : username.toString(),
+			sid : session.toString()
+		},
+
+		success : function(data) {
+			for (contact in data.kontakte) {
+				var lat;
+				var lng;
+				if ( typeof data.kontakte[contact].standort !== 'undefined') {
+					lng = data.kontakte[contact].standort.breitengrad;
+				}
+				if ( typeof data.kontakte[contact].standort !== 'undefined') {
+					lat = data.kontakte[contact].standort.laengengrad;
+				}
+				console.log(lat);
+				var compareLatLng = new google.maps.LatLng(lat, lng);
+				var km = latlng.distanceFrom(compareLatLng);
+				console.log(km);
+				if (km <= radius) {
+					table += '<tr><td>';
+					if ( typeof data.kontakte[contact].name === 'undefined') {
+						table += '</td>';
+					} else {
+						table += data.kontakte[contact].name + '</td>';
+					}
+					if ( typeof data.kontakte[contact].vorname === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].vorname + '</td>';
+					}
+					if ( typeof data.kontakte[contact].loginName === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].loginName + '</td>';
+					}
+					if ( typeof data.kontakte[contact].plz === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].plz + '</td>';
+					}
+					if ( typeof data.kontakte[contact].ort === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].ort + '</td>';
+					}
+					if ( typeof data.kontakte[contact].strasse === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].strasse + '</td>';
+					}
+					if ( typeof data.kontakte[contact].email.adresse === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].email.adresse + '</td>';
+					}
+					if ( typeof data.kontakte[contact].telefon === 'undefined') {
+						table += '<td></td>';
+					} else {
+						table += '<td>' + data.kontakte[contact].telefon + '</td></tr>';
+					}
+				}
+			}
+		}
+	});
+
+	if ( typeof table !== 'undefined') {
+		$('#tableBody').html(table);
+		$('#people').show();
+	} else {
+		$('#people').hide();
+		$('#tableBody').html('');
+		alert('No Nearby People found');
+
+	}
+
 	return table;
 }

@@ -13,13 +13,12 @@
 				alert('You are not logged in');
 				location.href = "http://localhost/fap_client/html/login.html";
 			}
-			var user = false;
 			var table;
 			var mode = false;
 			var mode_add = false;
 			var currentUi;
 		</script>
-		<link rel="stylesheet" type="text/css" href="../css/adressbook.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/addressbook.css"/>
 		<style>
 			#selectable .ui-selecting {
 				background: #ccc;
@@ -42,16 +41,19 @@
 							<a href="Index.html"> Index</a>
 						</li>
 						<li>
-							<a href="adressbook.html">Adressbook</a>
+							<a href="addressbook.html">Addressbook</a>
 						</li>
 						<li>
 							<a href="Login.html">Login</a>
-						</li>						
+						</li>
 						<li>
 							<a href="locationSearch.html">Location search</a>
 						</li>
 						<li>
 							<a href="setMyLocation.html">Set my location</a>
+						</li>
+						<li>
+							<a href="findNearbyPeople.html">Nearby People</a>
 						</li>
 					</ul>
 				</div>
@@ -87,6 +89,7 @@
 									<th class="fieldColor">Ort</th>
 									<th class="fieldColor">Strasse</th>
 									<th class="fieldColor">E-Mail</th>
+									<th class="fieldColor">Telefon</th>
 								</thead>
 								<tbody id="tableBody">
 
@@ -105,38 +108,45 @@
 								filter : 'tr',
 								selected : function(event, ui) {
 									currentUi = ui;
-
-									$(ui.selected).children().each(function(index, value) {
-										if (index == 0) {
-											$('#name').val($(value).text());
-										} else if (index == 1) {
-											$('#surname').val($(value).text());
-										} else if (index == 2) {
-											$('#username').val($(value).text());
-										} else if (index == 3) {
-											$('#postal').val($(value).text());
-										} else if (index == 4) {
-											$('#city').val($(value).text());
-										} else if (index == 5) {
-											$('#street').val($(value).text());
-										} else if (index == 6) {
-											$('#mail').val($(value).text());
-										}
-									});
+									if (!mode_add) {
+										$(ui.selected).children().each(function(index, value) {
+											if (index == 0) {
+												$('#name').val($(value).text());
+											} else if (index == 1) {
+												$('#surname').val($(value).text());
+											} else if (index == 2) {
+												$('#username').val($(value).text());
+											} else if (index == 3) {
+												$('#postal').val($(value).text());
+											} else if (index == 4) {
+												$('#city').val($(value).text());
+											} else if (index == 5) {
+												$('#street').val($(value).text());
+											} else if (index == 6) {
+												$('#mail').val($(value).text());
+											} else if (index == 7) {
+												$('#phone').val($(value).text());
+											}
+										});
+									}
 								}
 							});
 							$('#change').click(function() {
-								console.log(mode.toString());
-								mode = changeMode(mode);
+								if ( typeof currentUi !== 'undefined') {
+									console.log(mode.toString());
+									mode = changeMode(mode, 1);
+								} else {
+									alert('Please select row to edit');
+								}
 							});
 							$('#delete').click(function() {
 								$(currentUi.selected).remove();
-
+								currentUi = undefined;
 								setAdressbook();
 							});
 							$('#add').click(function() {
-								$('#edit_adressbook').show();
-								mode_add = true;
+								mode_add = changeMode(mode_add, 2);
+
 							});
 						</script>
 						<form name="edit_adressbook" id="edit_adressbook" accept-charset="utf-8">
@@ -149,7 +159,6 @@
 								<br />
 								<label for="username" class="fieldColor" > Benutzername: </label>
 								<input id="username" name="username" type="text" class="inputfieldPosition1" required/>
-								<div id='check' style="display:inline"></div>
 								<br />
 								<label for="postal" class="fieldColor" >PLZ: </label>
 								<input id="postal" name="postal" type="text" pattern="[0-9]{5}" class="inputfieldPosition1"/>
@@ -163,8 +172,10 @@
 								<label for="mail" class="fieldColor" >E-Mail: </label>
 								<input id="mail" name="mail" type="email" class="inputfieldPosition1" required/>
 								<br />
+								<label for="phone" class="fieldColor" >Telefon: </label>
+								<input id="phone" name="phone" type="text" class="inputfieldPosition1" required/>
+								<br />
 								<input type="button" id="editEntry" name="submit" value="OK"/>
-								<input type="button" value="abort" />
 							</fieldset>
 
 						</form>
@@ -190,6 +201,8 @@
 											$(value).text($('#street').val());
 										} else if (index == 6) {
 											$(value).text($('#mail').val());
+										} else if (index == 7) {
+											$(value).text($('#phone').val());
 										}
 									});
 								} else {
