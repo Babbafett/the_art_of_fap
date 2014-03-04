@@ -49,7 +49,7 @@ function addMarker(marker) {
 	this.markers.push(marker);
 }
 
-function addUser(form) {
+function addUser() {
 	if (user && password_validate && captcha) {
 
 		$.ajax({
