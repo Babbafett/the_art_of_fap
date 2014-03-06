@@ -70,14 +70,14 @@
 					</p>
 				</div>
 				<div id="main">
-					<form>
-						<label for="username">Username: </label>
-						<input id="username" type="text" required/>
-						<label for="username">Distance(km): </label>
-						<input id="radius" type="number" required />
-						<input type="button" value="Get Nearby People!" onclick="getNearbyPeople($('#radius').val())"/>
-					</form>
 					<fieldset>
+						<form>
+							<label for="username">Username: </label>
+							<input id="username" type="text" required/>
+							<label for="username">Distance(km): </label>
+							<input id="radius" type="number" required />
+							<input type="button" value="Get Nearby People!" onclick="getNearbyPeople($('#radius').val())"/>
+						</form>
 						<form>
 							<table id="people">
 								<thead>

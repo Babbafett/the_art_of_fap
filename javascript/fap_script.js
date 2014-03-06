@@ -10,7 +10,7 @@ google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
 	var lng2 = newLatLng.lng();
 	var radianLng2 = lng2 * (Math.PI / 180 );
 	// sort out the radius, MILES or KM?
-	var earth_radius = 3959;
+	var earth_radius = 6378.1;
 	// (km = 6378.1) OR (miles = 3959) - radius of the earth
 
 	// sort our the differences
