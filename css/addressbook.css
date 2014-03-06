@@ -102,6 +102,12 @@ div#content{
 	border:1px solid #333;
 	}
 	
+table, th, td{
+	
+
+border:1px solid #333;
+}
+	
 .tab_l{
 	float:left;
 	border-top:0px;
