@@ -1,3 +1,4 @@
+//Google Maps LatLng Objekt über prototype Attribut um Funktion erweitern, die die Distanz zwischen zwei LatLng Objekten ermittelt
 google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
 	// setup our variables
 	var lat1 = this.lat();
@@ -28,14 +29,17 @@ google.maps.LatLng.prototype.distanceFrom = function(newLatLng) {
 	// return the distance
 	return distance;
 };
+// Google Maps Canvas initialisieren
 function initialize() {
+	// Google Map Options festlegen mit Default Standort und Zoom 8
 	var mapOptions = {
 		center : new google.maps.LatLng(51, 7),
 		zoom : 8
 	};
+	// Google Maps Object mit Map Options erstellen
 	map = new google.maps.Map($("#map")[0], mapOptions);
 }
-
+// Google Maps alle Marker löschen
 function clearAllMarkers() {
 	if (markers) {
 		for (i in markers) {
@@ -44,14 +48,15 @@ function clearAllMarkers() {
 		markers.length = 0;
 	}
 }
-
+// Google Maps Marker setzen (globale Liste)
 function addMarker(marker) {
 	this.markers.push(marker);
 }
-
+// Nutzung REST Service um Benutzer hinzuzufügen
 function addUser() {
+	// Wenn User verfügbar, Passwort Check erfolgreich und Captcha richtig ist
 	if (user && password_validate && captcha) {
-
+		// AJAX Aufruf des REST Service um Benutzer hinzuzufügen
 		$.ajax({
 			url : 'http://localhost/FAPServer/addUser',
 			type : 'POST',
@@ -82,6 +87,7 @@ function addUser() {
 			}
 		});
 	} else {
+		//Wenn eingehende Prüfung nicht erfolgreich -> Fehlermeldung
 		if (!user) {
 			alert('Benutzer nicht verfügbar');
 		} else if (!password_validate) {
@@ -91,9 +97,10 @@ function addUser() {
 		}
 	};
 }
-
+//Verfügbarkeit des Benutzernamens prüfen
 function checkUsername() {
 	var user;
+	// AJAX Aufruf des REST Service um Login Namen zu prüfen
 	$.ajax({
 		url : 'http://localhost/FAPServer/checkLoginName',
 		dataType : 'json',
@@ -116,33 +123,38 @@ function checkUsername() {
 	return user;
 
 }
-
+//Eingegebenes Passwort validieren
 function passwordCheck() {
-
+	//Input Felderwerte holen
 	var password = $('#password').val();
 	var password_check = $('#password_check').val();
+	// Wenn Inputfelder übereinstimmen
 	if (password == password_check) {
+		//Passwort mindestens 8 Zeichen lang
 		if (password.length < 8) {
 			$('#password_validate').text('password must have 8 characters');
 			password_validate = false;
+		//Passwort darf nicht leer sein
 		} else if (password != '') {
 			$('#password_validate').text('passwords match');
 			password_validate = true;
+		//Passwort wurde nie eingegeben
 		} else if (password == '' || typeof password === 'undefined') {
 			$('#password_validate').text('password is emtpy');
 			password_validate = false;
 		}
-
+	// Wenn Inputfelder nicht übereinstimmen
 	} else {
 		$('#password_validate').text('passwords dont match');
 		password_validate = false;
 	};
 }
-
+//Geonames.org REST Service Nutzung Standort über PLZ im Canvas setzen
 function getLocationByPostal() {
-
+	//AJAX Aufruf des REST Service von Geonames.org
 	$.ajax({
 		url : 'http://api.geonames.org/postalCodeSearchJSON?username=Babbafett',
+		//jsonp für Callback Rückgabe
 		dataType : 'jsonp',
 		data : {
 			postalcode : $('#postal').val(),
@@ -165,12 +177,16 @@ function getLocationByPostal() {
 				},
 				success : function(data) {
 					if ( typeof data.geonames[0] != 'undefined') {
+						//Land Text setzen
 						$('#country').val(data.geonames[0].countryName);
+						//Lat und Lng Objekt des zurückgegebener Standort erstellen
 						var latlng = new google.maps.LatLng(data.geonames[0].lat, data.geonames[0].lng);
 						lat = data.geonames[0].lat;
 						lng = data.geonames[0].lng;
+						//Zoom von Google Maps Canvas größer auf 13 setzen
 						map.setZoom(13);
 						map.setCenter(latlng);
+						//vorhandene Marker lösche und neuen Marker an Standort setzen
 						clearAllMarkers();
 						addMarker(new google.maps.Marker({
 							map : map,
@@ -184,8 +200,9 @@ function getLocationByPostal() {
 	});
 
 }
-
+//Geonames.org REST Service Nutzung Standort über Stadtnamen im Canvas setzen
 function getLocationByCity() {
+	//AJAX Aufruf des REST Service von Geonames.org
 	$.ajax({
 		url : 'http://api.geonames.org/searchJSON?username=Babbafett',
 		dataType : 'jsonp',
@@ -216,10 +233,13 @@ function getLocationByCity() {
 	});
 
 }
-
+//Google Geocoder Nutzung Standort über Straßennamen im Canvas setzen
 function getLocationByStreet() {
+	//Google Geocoder Objekt erstellen
 	geocoder = new google.maps.Geocoder();
 	var address;
+	//durch keyUp Event bedingte Prüfung, ob bereits Eingaben erfolgt sind, um Suchergebnisse des Standorts zu verbessern
+	//Ergebnis setzt Suchstring für den AJAX Aufruf
 	if ($('#city').val() != '' && $('#postal').val() != '') {
 		if (postal && city) {
 			address = $('#street').val() + ' ' + city_string + ' ' + postal_string;
@@ -243,7 +263,7 @@ function getLocationByStreet() {
 		postal = false;
 		city = false;
 	}
-
+	//Geocoder Call mit Suchstring (Adresse)
 	geocoder.geocode({
 		'address' : address
 	}, function(results, status) {
@@ -258,7 +278,7 @@ function getLocationByStreet() {
 
 			lat = results[0].geometry.location.lat;
 			lng = results[0].geometry.location.lng;
-
+			//JSON iterieren
 			for (var i = 0; i < results[0].address_components.length; i++) {
 				for (var j = 0; j < results[0].address_components[i].types.length; j++) {
 					if (results[0].address_components[i].types[j] == 'locality') {
@@ -276,7 +296,7 @@ function getLocationByStreet() {
 		}
 	});
 }
-
+//Captcha Prüfung
 function checkCaptcha() {
 	var input = $('#captcha').val();
 	if (result == input) {
@@ -287,22 +307,26 @@ function checkCaptcha() {
 		captcha = false;
 	};
 }
-
+//Captcha generieren
 function generateCaptcha() {
 	$(document).ready(function() {
+		//zwei Zufallszahlen von 1-10 zufällig generieren
 		var numberA = 1 + Math.floor(Math.random() * 10);
 		var numberB = 1 + Math.floor(Math.random() * 10);
+		//Captcha Ergebnis setzen
 		result = numberA + numberB;
 		$('#captcha_label').text(numberA.toString() + ' + ' + numberB.toString() + ' = ?');
 	});
 }
-
+//Benutzerlogin
 function login() {
 	$(document).ready(function() {
 
 		var user;
 		user = checkUsername();
+		//Wenn User vorhanden
 		if (!user) {
+			//AJAX Aufruf des REST Service um Benutzer einzuloggen
 			$.ajax({
 				url : 'http://localhost/FAPServer/login',
 				type : 'POST',
@@ -321,8 +345,10 @@ function login() {
 					if (data) {
 						var sessionId = data;
 						createCookie($('#username').val(), sessionId, 7);
+						//Bei erfolgreichem Login bzw. Rückgabewert Weiterleitung um Standort zu setzen
 						location.href = "setMyLocation.html";
 					} else {
+						//Fehlermeldung Login fehlgeschlagen
 						alert('Anmeldung fehlgeschlagen');
 					}
 				}
@@ -330,18 +356,19 @@ function login() {
 		}
 	});
 }
-
+//Cookie setzen
 function createCookie(name, value, days) {
 	if (days) {
 		var date = new Date();
 		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		//Gültigkeit des Cookies
 		var expires = "; expires=" + date.toGMTString();
 	} else
 		var expires = "";
-
+	//Cookie anlegen
 	document.cookie = name + "=" + value + expires + "; path=http://localhost/fap_client/html/index.html";
 }
-
+//Cookie lesen und Session wiedergeben
 function readCookieSessionId() {
 
 	var ca = document.cookie.split(';');
@@ -353,7 +380,7 @@ function readCookieSessionId() {
 	return cookieString.substring(index + 4, 18);
 
 }
-
+//Cookie lesen und Benutzernamen wiedergeben
 function readCookieUserName() {
 
 	var ca = document.cookie.split(';');
@@ -365,7 +392,7 @@ function readCookieUserName() {
 	return cookieString.substring(0, index);
 
 }
-
+//Cookie löschen
 function deleteCookie() {
 
 	var name = readCookieUserName();
@@ -378,8 +405,9 @@ function deleteCookie() {
 			'sitzungsID' : session.toString()
 		}
 	});
+	//Cookie Gültigkeit auf Vergangenheit setzen, um Ungültigkeit zu erzwingen
 	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-
+	//AJAX Aufruf des REST Service um Benutzer auszuloggen und Session zu löschen
 	$.ajax({
 		url : 'http://localhost/FAPServer/logout',
 		type : 'DELETE',
@@ -397,16 +425,20 @@ function deleteCookie() {
 			}
 		}
 	});
+	// Nach Logout zur Login Seite weiterleiten
 	location.href = "login.html";
 }
-
+//Aktuelles Adressbuch zurückgeben
 function getContacts() {
+	//Session und Benutzernamen aus Cookie lesen
 	var username = readCookieUserName();
 	var session = readCookieSessionId();
 	var table;
+	//AJAX Aufruf des REST Service um Adressbuch zu ermitteln
 	$.ajax({
 		url : 'http://localhost/FAPServer/getAdressbuch',
 		type : 'GET',
+		//synchroner Aufruf um variable synchron zurückzugeben
 		async : false,
 		dataType : 'json',
 		contentType : 'application/json',
@@ -416,6 +448,7 @@ function getContacts() {
 		},
 
 		success : function(data) {
+			//JSON iterieren und entsprechende HTML Struktur generieren
 			for (contact in data.kontakte) {
 				table += '<tr><td>';
 				if ( typeof data.kontakte[contact].name === 'undefined') {
@@ -461,14 +494,16 @@ function getContacts() {
 			}
 		}
 	});
+	//HTML Struktur zurückgeben
 	return table;
 }
-
+//Edit und Add Mode setzen
 function changeMode(active, mode) {
 	var status;
 	if (mode == 1) {
 		if (!active) {
 			status = true;
+			//Forumlar einblenden, Status setzen und Formular mit zu editierenden Datensatz befüllen
 			$('#edit_adressbook').show();
 			$('#mode').text('Change mode on');
 			$(currentUi.selected).children().each(function(index, value) {
@@ -491,12 +526,14 @@ function changeMode(active, mode) {
 				}
 			});
 		} else {
+			//Modus verlassen und Formular wieder ausblenden
 			status = false;
 			$('#edit_adressbook').hide();
 			$('#mode').text('');
 		}
 	} else if (mode == 2) {
 		if (!active) {
+			//Forumlar einblenden und Status setzen
 			status = true;
 			$('#mode').text('Add Mode on');
 			$('#name').val(null);
@@ -509,6 +546,7 @@ function changeMode(active, mode) {
 			$('#phone').val(null);
 			$('#edit_adressbook').show();
 		} else {
+			//Modus verlassen und Formular wieder ausblenden
 			status = false;
 			$('#edit_adressbook').hide();
 			$('#mode').text('');
@@ -518,15 +556,19 @@ function changeMode(active, mode) {
 
 	return status;
 }
-
+//aktuellen Standort vom gegebenen Benutzernamen mit Hilfe von Google Geocoder zurückgeben
 function getLocation(loginName) {
+	//Eingabemaske ausblenden
 	$('#location_search').hide();
+	//Geocoder Object erstellen
 	geocoder = new google.maps.Geocoder();
 	var latlng;
+	//Prüfen ob Benutzername vorhanden
 	var invalidUser = checkUsername();
 	if (!invalidUser) {
 		$('#location_search').show();
 		initialize();
+		//AJAX Aufruf des REST Service um aktuellen Standort zu ermitteln
 		$.ajax({
 			url : 'http://localhost/FAPServer/getStandort/' + loginName,
 			type : 'GET',
@@ -583,7 +625,7 @@ function getLocation(loginName) {
 
 	return latlng;
 }
-
+//Adressbuch setzen
 function setAdressbook() {
 	var value1;
 	var value2;
@@ -596,9 +638,9 @@ function setAdressbook() {
 	var json;
 	var count = 1;
 	var string;
-
+	//JSON aufbauen
 	json = "{'kontakte':[";
-
+	//aktuelles Adressbuch itereieren, Values setzen und das JSON weiter aufbauen
 	$('#tableBody').children().each(function(index, value) {
 		if (count > 1 && count <= $('#tableBody').children().length) {
 			json = json + ',';
@@ -628,9 +670,11 @@ function setAdressbook() {
 		json = json + string;
 		count++;
 	});
+	//JSON Aufbaulogik abschließen
 	json = json + ']}';
+	//JSON aus String erstellen
 	json = JSON.stringify(json);
-
+	//AJAX Aufruf des REST Service um aktuelles Adressbuch zu setzen
 	$.ajax({
 		url : 'http://localhost/FAPServer/setAdressbuch',
 		type : 'PUT',
@@ -650,10 +694,10 @@ function setAdressbook() {
 	});
 
 }
-
+//Kontakt dem aktuellen anzeigenden Adressbuch hinzufügen
 function addContact() {
 	var table;
-
+	//Werte aus Inputfelder lesen und <tr> Datensatz aufbauen
 	table += '<tr><td>';
 	if ( typeof $('#name').val() === 'undefined') {
 		table += '</td>';
@@ -695,13 +739,15 @@ function addContact() {
 	} else {
 		table += '<td>' + $('#phone').val() + '</td>';
 	}
+	//<tr> HTML Struktur zurückgeben
 	return table;
 }
-
+//aktuellen Standort setzen
 function setLocation(lat, lng) {
 	var json;
 	var username = readCookieUserName();
 	var session = readCookieSessionId();
+	//JSON aufbauen
 	json = JSON.stringify({
 		'loginName' : username.toString(),
 		'sitzung' : {
@@ -712,6 +758,7 @@ function setLocation(lat, lng) {
 			'laengengrad' : lat.toString()
 		}
 	});
+	//AJAX Aufruf des REST Service um aktuellen Standort zu setzen
 	$.ajax({
 		url : 'http://localhost/FAPServer/setStandort',
 		type : 'PUT',
@@ -729,16 +776,18 @@ function setLocation(lat, lng) {
 			}
 		}
 	});
+	//Nach Setzen des Standorts zum Adressbuch weiterleiten
 	location.href = "addressbook.html";
 
 }
-
+//Personen in der Umgebung des aktuellen Standorts innerhalb eines definierten Radius zurückgeben
 function getNearbyPeople(radius) {
 	$('tableBody').html('');
 	var username = readCookieUserName();
 	var session = readCookieSessionId();
 	var latlng;
 	var table;
+	//AJAX Aufruf des REST Service um den aktuellen Standort zu ermitteln
 	$.ajax({
 		url : 'http://localhost/FAPServer/getStandort/' + username,
 		type : 'GET',
@@ -749,6 +798,7 @@ function getNearbyPeople(radius) {
 			latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
 		}
 	});
+	//AJAX Aufruf des REST Service um aktuelles Adressbuch des Benutzers zu ermitteln 
 	$.ajax({
 		url : 'http://localhost/FAPServer/getAdressbuch',
 		type : 'GET',
@@ -761,6 +811,7 @@ function getNearbyPeople(radius) {
 		},
 
 		success : function(data) {
+			//JSON iterieren
 			for (contact in data.kontakte) {
 				var lat;
 				var lng;
@@ -771,10 +822,13 @@ function getNearbyPeople(radius) {
 					lat = data.kontakte[contact].standort.laengengrad;
 				}
 				console.log(lat);
+				//Distanz mit prototype Funktion (siehe Anfang des Skripts) ermitteln
 				var compareLatLng = new google.maps.LatLng(lat, lng);
 				var km = latlng.distanceFrom(compareLatLng);
 				console.log(km);
+				//Prüfen ob Distanz innerhalb des angegebenen Radius
 				if (km <= radius) {
+					//HTML Struktur der Personen aufbauen
 					table += '<tr><td>';
 					if ( typeof data.kontakte[contact].name === 'undefined') {
 						table += '</td>';
@@ -822,6 +876,7 @@ function getNearbyPeople(radius) {
 	});
 
 	if ( typeof table !== 'undefined') {
+		//HTML Struktur setzen und anzeigen
 		$('#tableBody').html(table);
 		$('#people').show();
 	} else {
