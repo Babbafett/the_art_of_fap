@@ -128,7 +128,7 @@ p{
 	}
 
 	
-
+/*Gibt an, wie die map angezeigt werden soll*/
 div#map{
 	width:500px;
 	height:400px;
