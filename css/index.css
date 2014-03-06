@@ -1,8 +1,11 @@
-body {
+/*Grundlegende Definition des Bodys, Hintergrundfarbe und Schriftart setzen*/
+html,body {
 	background-color:#232323;
 	font-family:"Trebuchet MS", Arial, sans-serif;
 	}
 	
+/*Im Container befindet sich der komplette Code des Bodys. Hier wird die Breite des hinterher dargestellten
+ Inhalts festgelegt, alles befindet sich hierdrin*/	
 div#container {
 	width:750px;
 	margin:0 auto;
@@ -10,32 +13,22 @@ div#container {
 	background-color:#1F1F1F;
 	}
 	
+/*Hier wird der Style für alle auf der Seite verwendeten Links definiert*/	
 a, a:visited, a:active{
 	color:#4684C1;
 	}
 	
+/*Im Folgenden wird das Verhalten der Links bei Mouseover beschrieben*/	
 a:hover{
 	color:#333px;
 	}
-	
-p{
-	/*padding:0 10px 0 10px;*/
-	margin-top:5px;
-	color:#ccc;
-	font-size:14px;
-	text-align: justify;
-	margin-left: 100px;
-	margin-right: 10px;
-	}
 
-div#main{
-	color:#ccc;	
-}
-	
+/*Höhe des Headers*/ 	
 div#header {
 	height:100px;
 	}
 	
+/*Anpassen der Navigationsleiste*/	
 div#nav {
 	width:350px;
 	margin:0 auto;
@@ -43,54 +36,78 @@ div#nav {
 	border-top:0px;
 	text-align:center;
 	}
+	
+/*Einstellen der Liste, wieviel Rand*/
 	#nav ul, #nav li{
 		margin:0px;
 		padding:0px;
 		}
+		
+/*Anzeige der Elemente in der Liste*/
 	#nav li{
 		display: inline;
 		list-style:none;
 		margin:0 5px 0 5px;
 		font-size:14px;
 		}
+/*Wie wird mit Links in der Navigationsliste umgegangen*/
 	#nav li a {
 		color:#4684C1;
 		text-decoration:none;
 		}
+/*Regelt den Umgang mit Links bei Mouseover*/ 
 	#nav li a:hover{
 		border-bottom:1px solid #4684C1;
 		}
-		
-		
-h1{
-	color:#ccc;
-	font-size:30px;
-	margin:17px 0 0 0;
-	padding:0px;
-	text-align:center;
-	}
-	
-.h1divider{
-	color:#333;
-	}
 
-.h1first{
-	color:#4684C1;
-	}
-
-
+/*Genereller Umgang mit dem dargestellten Inhalt auf der speziellen Seite*/
 div#content_container {
 	width: 700px;
 	margin:0 auto;
 	margin-top:25px;
 	margin-bottom:25px;
 	}
+
+
 	
+/*Das Hauptdiv, zur Anzeige aller Inhalte*/	
 div#content{
 	border:1px solid #333;
 	}
-
 	
+	/*Anpassen der Textfarbe im Div main*/	
+div#main{
+	color:#ccc;	
+}	
+	/*Anzeige, des Footers, dieser befindet sich außerhalb des Contents und des Content-Containers, 
+ *allerdings noch innerhalb des Containers, so dass die Fußleiste noch innerhalb der Box angezeigt wird*/
+div#footer{
+	height:25px;
+	clear:both;
+	font-size:10px;
+	text-align:right;
+	padding-right:25px;
+	color:#ccc;
+	}
+	
+/*H1 bestimmt die Darstellung von Überschriften*/		
+h1{
+	color:#4684C1;
+	font-size:30px;
+	margin:17px 0 0 0;
+	padding:0px;
+	text-align:center;
+	}
+/*Hier wird beschrieben, wie Paragraphen angezeigt werden, wie diese eingerpckt sind, und an welcher 
+ Stelle des Divs in dem sie sich befinden, sie angezeigt werden*/
+p{
+	margin-top:5px;
+	color:#ccc;
+	font-size:14px;
+	text-align: justify;
+	margin-left: 100px;
+	}
+/*Umgang mit Tabs, so dass links und rechts innerhalb des Divs ein Platzhalter steht*/	
 .tab_l,.tab_r{
 	padding:0 5px 0 5px;
 	margin:0px;
@@ -98,7 +115,7 @@ div#content{
 	color:#4684C1;
 	border:1px solid #333;
 	}
-	
+		
 .tab_l{
 	float:left;
 	border-top:0px;
@@ -109,16 +126,9 @@ div#content{
 	border-top:0px;
 	border-right:0px;
 	}
+
 	
-div#footer{
-	height:25px;
-	clear:both;
-	font-size:10px;
-	text-align:right;
-	padding-right:25px;
-	color:#ccc;
-	}
-	
+/*Gibt an, wie die map angezeigt werden soll*/
 div#map{
 	width:500px;
 	height:400px;
@@ -126,7 +136,7 @@ div#map{
 	margin-left:auto;
 	margin-right:auto;	
 }
-
+/*Beschreibt die Position von input-feldern*/
 .inputfieldPosition1
 {
 top:10px;
