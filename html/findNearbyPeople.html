@@ -14,7 +14,9 @@
 				location.href = "http://localhost/fap_client/html/login.html";
 			}
 			var table;
-
+			var map;
+			var markers = [];
+			var infoWindows = [];
 		</script>
 		<link rel="stylesheet" type="text/css" href="../css/findNearbyPeople.css"/>
 
@@ -66,7 +68,7 @@
 					<br />
 					<p>
 						Here are your Friends!
-						
+
 					</p>
 				</div>
 				<div id="main">
@@ -78,6 +80,7 @@
 							<input id="radius" type="number" required />
 							<input type="button" value="Get Nearby People!" onclick="getNearbyPeople($('#radius').val())"/>
 						</form>
+						<div id="map" <!--style="width: 500px; height: 400px"--> ></div>
 						<form>
 							<table id="people">
 								<thead>
@@ -97,6 +100,7 @@
 						</form>
 						<script type="text/javascript">
 							$('#people').hide();
+							$('#map').hide();
 
 						</script>
 

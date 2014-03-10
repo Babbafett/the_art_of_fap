@@ -39,6 +39,7 @@ function initialize() {
 	// Google Maps Object mit Map Options erstellen
 	map = new google.maps.Map($("#map")[0], mapOptions);
 }
+
 // Google Maps alle Marker löschen
 function clearAllMarkers() {
 	if (markers) {
@@ -48,10 +49,12 @@ function clearAllMarkers() {
 		markers.length = 0;
 	}
 }
+
 // Google Maps Marker setzen (globale Liste)
 function addMarker(marker) {
 	this.markers.push(marker);
 }
+
 // Nutzung REST Service um Benutzer hinzuzufügen
 function addUser() {
 	// Wenn User verfügbar, Passwort Check erfolgreich und Captcha richtig ist
@@ -97,6 +100,7 @@ function addUser() {
 		}
 	};
 }
+
 //Verfügbarkeit des Benutzernamens prüfen
 function checkUsername() {
 	var user;
@@ -123,6 +127,7 @@ function checkUsername() {
 	return user;
 
 }
+
 //Eingegebenes Passwort validieren
 function passwordCheck() {
 	//Input Felderwerte holen
@@ -134,21 +139,22 @@ function passwordCheck() {
 		if (password.length < 8) {
 			$('#password_validate').text('password must have 8 characters');
 			password_validate = false;
-		//Passwort darf nicht leer sein
+			//Passwort darf nicht leer sein
 		} else if (password != '') {
 			$('#password_validate').text('passwords match');
 			password_validate = true;
-		//Passwort wurde nie eingegeben
+			//Passwort wurde nie eingegeben
 		} else if (password == '' || typeof password === 'undefined') {
 			$('#password_validate').text('password is emtpy');
 			password_validate = false;
 		}
-	// Wenn Inputfelder nicht übereinstimmen
+		// Wenn Inputfelder nicht übereinstimmen
 	} else {
 		$('#password_validate').text('passwords dont match');
 		password_validate = false;
 	};
 }
+
 //Geonames.org REST Service Nutzung Standort über PLZ im Canvas setzen
 function getLocationByPostal() {
 	//AJAX Aufruf des REST Service von Geonames.org
@@ -200,6 +206,7 @@ function getLocationByPostal() {
 	});
 
 }
+
 //Geonames.org REST Service Nutzung Standort über Stadtnamen im Canvas setzen
 function getLocationByCity() {
 	//AJAX Aufruf des REST Service von Geonames.org
@@ -233,6 +240,7 @@ function getLocationByCity() {
 	});
 
 }
+
 //Google Geocoder Nutzung Standort über Straßennamen im Canvas setzen
 function getLocationByStreet() {
 	//Google Geocoder Objekt erstellen
@@ -296,6 +304,7 @@ function getLocationByStreet() {
 		}
 	});
 }
+
 //Captcha Prüfung
 function checkCaptcha() {
 	var input = $('#captcha').val();
@@ -307,6 +316,7 @@ function checkCaptcha() {
 		captcha = false;
 	};
 }
+
 //Captcha generieren
 function generateCaptcha() {
 	$(document).ready(function() {
@@ -318,6 +328,7 @@ function generateCaptcha() {
 		$('#captcha_label').text(numberA.toString() + ' + ' + numberB.toString() + ' = ?');
 	});
 }
+
 //Benutzerlogin
 function login() {
 	$(document).ready(function() {
@@ -356,6 +367,7 @@ function login() {
 		}
 	});
 }
+
 //Cookie setzen
 function createCookie(name, value, days) {
 	if (days) {
@@ -368,6 +380,7 @@ function createCookie(name, value, days) {
 	//Cookie anlegen
 	document.cookie = name + "=" + value + expires + "; path=http://localhost/fap_client/html/index.html";
 }
+
 //Cookie lesen und Session wiedergeben
 function readCookieSessionId() {
 
@@ -380,6 +393,7 @@ function readCookieSessionId() {
 	return cookieString.substring(index + 4, 18);
 
 }
+
 //Cookie lesen und Benutzernamen wiedergeben
 function readCookieUserName() {
 
@@ -392,6 +406,7 @@ function readCookieUserName() {
 	return cookieString.substring(0, index);
 
 }
+
 //Cookie löschen
 function deleteCookie() {
 
@@ -428,6 +443,7 @@ function deleteCookie() {
 	// Nach Logout zur Login Seite weiterleiten
 	location.href = "login.html";
 }
+
 //Aktuelles Adressbuch zurückgeben
 function getContacts() {
 	//Session und Benutzernamen aus Cookie lesen
@@ -497,6 +513,7 @@ function getContacts() {
 	//HTML Struktur zurückgeben
 	return table;
 }
+
 //Edit und Add Mode setzen
 function changeMode(active, mode) {
 	var status;
@@ -556,6 +573,7 @@ function changeMode(active, mode) {
 
 	return status;
 }
+
 //aktuellen Standort vom gegebenen Benutzernamen mit Hilfe von Google Geocoder zurückgeben
 function getLocation(loginName) {
 	//Eingabemaske ausblenden
@@ -580,10 +598,10 @@ function getLocation(loginName) {
 				$('#name').val(data.vorname);
 				$('#nameSearched').val(data.loginName);
 				latlng = JSON.stringify({
-					'lat' : data.standort.laengengrad,
-					'lng' : data.standort.breitengrad
+					'lng' : data.standort.laengengrad,
+					'lat' : data.standort.breitengrad
 				});
-				var latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
+				var latlng = new google.maps.LatLng(data.standort.breitengrad, data.standort.laengengrad);
 				geocoder.geocode({
 					'latLng' : latlng
 				}, function(results, status) {
@@ -625,6 +643,7 @@ function getLocation(loginName) {
 
 	return latlng;
 }
+
 //Adressbuch setzen
 function setAdressbook() {
 	var value1;
@@ -694,6 +713,7 @@ function setAdressbook() {
 	});
 
 }
+
 //Kontakt dem aktuellen anzeigenden Adressbuch hinzufügen
 function addContact() {
 	var table;
@@ -742,6 +762,7 @@ function addContact() {
 	//<tr> HTML Struktur zurückgeben
 	return table;
 }
+
 //aktuellen Standort setzen
 function setLocation(lat, lng) {
 	var json;
@@ -780,9 +801,13 @@ function setLocation(lat, lng) {
 	location.href = "addressbook.html";
 
 }
+
 //Personen in der Umgebung des aktuellen Standorts innerhalb eines definierten Radius zurückgeben
 function getNearbyPeople(radius) {
+	clearAllMarkers();
 	$('tableBody').html('');
+	$('#map').show();
+	initialize();
 	var username = readCookieUserName();
 	var session = readCookieSessionId();
 	var latlng;
@@ -795,10 +820,12 @@ function getNearbyPeople(radius) {
 		dataType : 'json',
 		contentType : 'application/json',
 		success : function(data) {
-			latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
+			latlng = new google.maps.LatLng(data.standort.breitengrad, data.standort.laengengrad);
 		}
 	});
-	//AJAX Aufruf des REST Service um aktuelles Adressbuch des Benutzers zu ermitteln 
+	map.setCenter(latlng);
+	map.setZoom(4);
+	//AJAX Aufruf des REST Service um aktuelles Adressbuch des Benutzers zu ermitteln
 	$.ajax({
 		url : 'http://localhost/FAPServer/getAdressbuch',
 		type : 'GET',
@@ -811,23 +838,56 @@ function getNearbyPeople(radius) {
 		},
 
 		success : function(data) {
+			addMarker(new google.maps.Marker({
+				map : map,
+				position : latlng,
+				clickable : true
+			}));
+			var content = 'current Location of ' + username.toString();
+			addInfoWindow(content);
+
 			//JSON iterieren
 			for (contact in data.kontakte) {
+				var index = 1;
 				var lat;
 				var lng;
 				if ( typeof data.kontakte[contact].standort !== 'undefined') {
-					lng = data.kontakte[contact].standort.breitengrad;
+					lat = data.kontakte[contact].standort.breitengrad;
 				}
 				if ( typeof data.kontakte[contact].standort !== 'undefined') {
-					lat = data.kontakte[contact].standort.laengengrad;
+					lng = data.kontakte[contact].standort.laengengrad;
 				}
-				console.log(lat);
 				//Distanz mit prototype Funktion (siehe Anfang des Skripts) ermitteln
 				var compareLatLng = new google.maps.LatLng(lat, lng);
 				var km = latlng.distanceFrom(compareLatLng);
 				console.log(km);
 				//Prüfen ob Distanz innerhalb des angegebenen Radius
 				if (km <= radius) {
+
+					addMarker(new google.maps.Marker({
+						map : map,
+						position : compareLatLng,
+						clickable : true
+					}));
+					if ( typeof data.kontakte[contact].name === 'undefined') {
+						if ( typeof data.kontakte[contact].vorname === 'undefined') {
+							content = 'no user details';
+							addInfoWindow(content);
+						} else {
+							content = 'current Location of ' + data.kontakte[contact].vorname;
+							addInfoWindow(content);
+						}
+					} else {
+						if ( typeof data.kontakte[contact].vorname === 'undefined') {
+							content = 'current Location of ' + data.kontakte[contact].name;
+							addInfoWindow(content);
+						} else {
+							content = 'current Location of ' + data.kontakte[contact].name + ', ' + data.kontakte[contact].vorname;
+							addInfoWindow(content);
+						}
+					}
+
+					index++;
 					//HTML Struktur der Personen aufbauen
 					table += '<tr><td>';
 					if ( typeof data.kontakte[contact].name === 'undefined') {
@@ -871,20 +931,49 @@ function getNearbyPeople(radius) {
 						table += '<td>' + data.kontakte[contact].telefon + '</td></tr>';
 					}
 				}
+
 			}
 		}
 	});
 
 	if ( typeof table !== 'undefined') {
+		setInfoWindows();
 		//HTML Struktur setzen und anzeigen
 		$('#tableBody').html(table);
 		$('#people').show();
+		getInfoWindow(0).open(map, getMarker(0));
 	} else {
 		$('#people').hide();
+		$('#map').hide();
 		$('#tableBody').html('');
 		alert('No Nearby People found');
 
 	}
 
 	return table;
+
 }
+
+function getMarker(index) {
+	return this.markers[index];
+}
+
+function getInfoWindow(index) {
+	return this.infoWindows[index];
+}
+
+function addInfoWindow(content) {
+	this.infoWindows.push(new google.maps.InfoWindow({
+		content : content
+	}));
+}
+
+function setInfoWindows() {
+	for (var i = 0; i < this.markers.length; i++) {
+		this.markers[i].info = this.infoWindows[i];
+		google.maps.event.addListener(this.markers[i], 'click', function() {
+			this.info.open(map, this);
+		});
+	}
+}
+
