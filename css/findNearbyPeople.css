@@ -132,6 +132,7 @@ div#map {
 	position: relative;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 5px;
 }
 /*Beschreibt die Position von input-feldern*/
 .inputfieldPosition1 {
@@ -151,4 +152,15 @@ div#map {
 
 .fieldColor {
 	color: #ccc;
+}
+/*Anzeige der Tabelle*/
+table, th, td {
+	border: 1px solid #333;
+}
+
+tr {
+	color: #ccc;
+}
+#people{
+	margin-top: 5px;
 }
