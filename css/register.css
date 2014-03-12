@@ -152,3 +152,10 @@ div#map {
 .fieldColor {
 	color: #ccc;
 }
+#street {
+	margin-left: 31px;
+}
+#city {
+	position: relative;
+	left: 30px;
+}
