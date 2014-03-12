@@ -576,13 +576,11 @@ function changeMode(active, mode) {
 
 //aktuellen Standort vom gegebenen Benutzernamen mit Hilfe von Google Geocoder zurückgeben
 function getLocation(loginName) {
-	var lat;
-	var lng;
-	var latlng;
 	//Eingabemaske ausblenden
 	$('#location_search').hide();
 	//Geocoder Object erstellen
 	geocoder = new google.maps.Geocoder();
+	var latlng;
 	//Prüfen ob Benutzername vorhanden
 	var invalidUser = checkUsername();
 	if (!invalidUser) {
@@ -597,9 +595,7 @@ function getLocation(loginName) {
 				$('#surname').val(data.nachname);
 				$('#name').val(data.vorname);
 				$('#nameSearched').val(data.loginName);
-				lat = parseFloat(data.standort.breitengrad.toString());
-				lng = parseFloat(data.standort.laengengrad.toString());
-				latlng = new google.maps.LatLng(lat, lng);
+				latlng = new google.maps.LatLng(data.standort.laengengrad, data.standort.breitengrad);
 				geocoder.geocode({
 					'latLng' : latlng
 				}, function(results, status) {
@@ -979,4 +975,3 @@ function setInfoWindows() {
 		});
 	}
 }
-
