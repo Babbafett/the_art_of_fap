@@ -24,12 +24,12 @@ a:hover{
 	}
 
 /*Höhe des Headers*/ 	
-div#header {
+#header {
 	height:100px;
 	}
 	
 /*Anpassen der Navigationsleiste*/	
-div#nav {
+#nav {
 	width:350px;
 	margin:0 auto;
 	border:1px solid #333;
@@ -81,7 +81,7 @@ div#main{
 }	
 	/*Anzeige, des Footers, dieser befindet sich außerhalb des Contents und des Content-Containers, 
  *allerdings noch innerhalb des Containers, so dass die Fußleiste noch innerhalb der Box angezeigt wird*/
-div#footer{
+#footer{
 	height:25px;
 	clear:both;
 	font-size:10px;
