@@ -70,13 +70,14 @@
 					<p>
 						Search your friend so you can stick a knife into his back!
 						<br />
+					
 					</p>
-
-					<form id="input">
-						<label for="username">Username: </label>
+					 <form id="input">
+						<label for="username" class="centerfield">Username: </label>
 						<input id="username" type="text" required/>
 						<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
 					</form>
+					
 				</div>
 
 				<div id="main">
@@ -84,34 +85,34 @@
 					<form id="location_search" accept-charset="utf-8">
 						<fieldset>
 							<section style="display: block">
-								<label for="surname">Surname: </label>
-								<input id="surname" name="surname" type="text" readonly/>
+								<label for="surname" class="fieldColor">Surname: </label>
+								<input id="surname" name="surname" type="text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="name">Name: </label>
-								<input id="name" name="name" type="text" readonly/>
+								<label for="name" class="fieldColor">Name: </label>
+								<input id="name" name="name" type="text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="nameSearched"> Username: </label>
-								<input id="nameSearched" name="username" type="text" readonly/>
+								<label for="nameSearched" class="fieldColor"> Username: </label>
+								<input id="nameSearched" name="username" type="text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="postal">Postal code: </label>
-								<input id="postal" name="postal" type="text" readonly/>
+								<label for="postal" class="fieldColor">Postal code: </label>
+								<input id="postal" name="postal" type="text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="city">Ort: </label>
-								<input id="city" name="city" type="text" readonly/>
+								<label for="city" class="fieldColor">Ort: </label>
+								<input id="city" name="city" type="text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="street">Strasse: </label>
-								<input id = "street" name = "street" type = "text" readonly/>
+								<label for="street" class="fieldColor">Strasse: </label>
+								<input id = "street" name = "street" type = "text" class="inputfieldPosition1" readonly/>
 								<br />
 
-								<label for="country">Land: </label>
-								<input id="country" name="country" type="text" readonly/>
+								<label for="country" class="fieldColor">Land: </label>
+								<input id="country" name="country" type="text" class="inputfieldPosition1" readonly/>
 								<br />
-
+								<br />
 								<div id="map" style="width: 500px; height: 400px" ></div>
 							</section>
 						</fieldset>

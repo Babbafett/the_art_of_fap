@@ -152,11 +152,18 @@ div#map {
 .fieldColor {
 	color: #ccc;
 }
+
 form {
 	position: relative;
-	text-align: center;
+	text-align: left;
 	color: #ccc;
 }
+
+.centerfield{
+	left: 50%;
+	margin-left: 100px;
+}
+
 #input {
 	margin-bottom: 5px;
 }
