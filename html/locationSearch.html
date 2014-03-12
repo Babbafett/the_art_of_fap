@@ -17,6 +17,7 @@
 			var map;
 			var markers = [];
 			var user = false;
+			var geocoder;
 			google.maps.event.addDomListener(window, 'load', initialize);
 		</script>
 		<link rel="stylesheet" type="text/css" href="../css/locationSearch.css"/>
@@ -71,13 +72,11 @@
 						<br />
 					</p>
 
-					<div id="main">
-						<form>
-							<label for="username">Username: </label>
-							<input id="username" type="text" required/>
-							<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
-						</form>
-					</div>
+					<form>
+						<label for="username">Username: </label>
+						<input id="username" type="text" required/>
+						<input type="button" value="Get location!" onclick="getLocation($('#username').val())"/>
+					</form>
 				</div>
 
 				<div id="main">
@@ -92,6 +91,7 @@
 								<label for="name">Name: </label>
 								<input id="name" name="name" type="text" readonly/>
 								<br />
+
 								<label for="nameSearched"> Username: </label>
 								<input id="nameSearched" name="username" type="text" readonly/>
 								<br />
@@ -99,26 +99,14 @@
 								<label for="postal">Postal code: </label>
 								<input id="postal" name="postal" type="text" readonly/>
 								<br />
-								<script type="text/javascript">
-									$('#postal').keyup(getLocationByPostal);
-								</script>
 
 								<label for="city">Ort: </label>
 								<input id="city" name="city" type="text" readonly/>
 								<br />
-								<script type="text/javascript">
-									$('#city').keyup(getLocationByCity);
 
-									<label for="street">Strasse: </label>
-									<input
-									id = "street"
-									name = "street"
-									type = "text" readonly/><br />
-									<script
-									type = "text/javascript" >
-									var geocoder;
-									$('#street').keyup(getLocationByStreet);
-								</script>
+								<label for="street">Strasse: </label>
+								<input id = "street" name = "street" type = "text" readonly/>
+								<br />
 
 								<label for="country">Land: </label>
 								<input id="country" name="country" type="text" readonly/>

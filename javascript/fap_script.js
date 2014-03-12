@@ -576,16 +576,16 @@ function changeMode(active, mode) {
 
 //aktuellen Standort vom gegebenen Benutzernamen mit Hilfe von Google Geocoder zurückgeben
 function getLocation(loginName) {
+	var lat;
+	var lng;
+	var latlng;
 	//Eingabemaske ausblenden
 	$('#location_search').hide();
 	//Geocoder Object erstellen
 	geocoder = new google.maps.Geocoder();
-	var latlng;
 	//Prüfen ob Benutzername vorhanden
 	var invalidUser = checkUsername();
 	if (!invalidUser) {
-		$('#location_search').show();
-		initialize();
 		//AJAX Aufruf des REST Service um aktuellen Standort zu ermitteln
 		$.ajax({
 			url : 'http://localhost/FAPServer/getStandort/' + loginName,
@@ -597,15 +597,15 @@ function getLocation(loginName) {
 				$('#surname').val(data.nachname);
 				$('#name').val(data.vorname);
 				$('#nameSearched').val(data.loginName);
-				latlng = JSON.stringify({
-					'lng' : data.standort.laengengrad,
-					'lat' : data.standort.breitengrad
-				});
-				var latlng = new google.maps.LatLng(data.standort.breitengrad, data.standort.laengengrad);
+				lat = parseFloat(data.standort.breitengrad.toString());
+				lng = parseFloat(data.standort.laengengrad.toString());
+				latlng = new google.maps.LatLng(lat, lng);
 				geocoder.geocode({
 					'latLng' : latlng
 				}, function(results, status) {
 					if (status == google.maps.GeocoderStatus.OK) {
+						$('#location_search').show();
+						initialize();
 						map.setZoom(15);
 						map.setCenter(results[0].geometry.location);
 						clearAllMarkers();
@@ -631,17 +631,20 @@ function getLocation(loginName) {
 						}
 						$('#street').val(street);
 
+					} else {
+						alert('User found but no location found');
+						$('#location_search').hide();
 					}
+
 				});
 
 			}
 		});
-
+		return latlng;
 	} else {
 		alert('User not valid!');
 	}
 
-	return latlng;
 }
 
 //Adressbuch setzen
@@ -775,8 +778,8 @@ function setLocation(lat, lng) {
 			'sitzungsID' : session.toString()
 		},
 		'standort' : {
-			'breitengrad' : lng.toString(),
-			'laengengrad' : lat.toString()
+			'breitengrad' : lat.toString(),
+			'laengengrad' : lng.toString()
 		}
 	});
 	//AJAX Aufruf des REST Service um aktuellen Standort zu setzen
